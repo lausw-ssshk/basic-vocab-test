@@ -1,0 +1,5018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Basic Vocab Test — Part A</title>
+<style>
+  :root {
+    --bg: #f4f6f9; --card: #ffffff; --text: #1a2332; --muted: #5a6a7a;
+    --primary: #1565c0; --primary-dark: #0d47a1; --accent: #00897b;
+    --border: #d0d7de; --shadow: 0 2px 12px rgba(26, 35, 50, 0.08);
+    --radius: 14px; --tap: 48px;
+    --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100%; -webkit-text-size-adjust: 100%; }
+  body { padding: 12px 12px calc(24px + env(safe-area-inset-bottom, 0px)); max-width: 560px; margin: 0 auto; }
+  h1 { font-size: 1.35rem; margin: 8px 0 4px; line-height: 1.3; }
+  h2 { font-size: 1.15rem; margin: 0 0 12px; }
+  p, li { line-height: 1.5; }
+  .muted { color: var(--muted); font-size: 0.92rem; }
+  .card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 18px; margin: 12px 0; }
+  .screen { display: none; } .screen.active { display: block; }
+  label { display: block; font-weight: 600; font-size: 0.9rem; margin: 14px 0 6px; }
+  input[type="text"] { width: 100%; min-height: var(--tap); padding: 10px 14px; font-size: 1rem; border: 1.5px solid var(--border); border-radius: 10px; font-family: inherit; }
+  input[type="text"]:focus { outline: 2px solid var(--primary); border-color: var(--primary); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--tap); padding: 12px 20px; font-size: 1.05rem; font-weight: 650; font-family: inherit; border: none; border-radius: 12px; cursor: pointer; width: 100%; margin-top: 10px; }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-primary:not(:disabled):active { background: var(--primary-dark); }
+  .btn-secondary { background: #e8eef5; color: var(--text); }
+  .btn-ghost { background: transparent; color: var(--primary); border: 1.5px solid var(--border); }
+  .progress-bar-wrap { height: 6px; background: #e0e6ed; border-radius: 3px; overflow: hidden; margin: 8px 0 4px; }
+  .progress-bar { height: 100%; background: var(--accent); width: 0%; transition: width 0.25s ease; }
+  .status-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--muted); margin-bottom: 8px; }
+  .prompt { font-size: 0.95rem; font-weight: 650; color: var(--primary-dark); margin: 0 0 10px; line-height: 1.4; }
+  .sentence { font-size: 1.12rem; line-height: 1.5; margin: 8px 0 16px; font-weight: 500; }
+  .sentence u.target {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    font-weight: 750;
+    color: var(--primary-dark);
+  }
+  .hear-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .hear-btn { min-height: 44px; min-width: 44px; padding: 8px 14px; border-radius: 999px; border: 1.5px solid var(--border); background: #f8fafc; font-size: 0.9rem; font-family: inherit; font-weight: 600; color: var(--text); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .hear-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .hear-btn .icon { font-size: 1.1rem; line-height: 1; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option { display: flex; align-items: stretch; gap: 8px; }
+  .option-main { flex: 1; min-height: var(--tap); text-align: left; padding: 12px 14px; border: 2px solid var(--border); border-radius: 12px; background: #fff; font-size: 1.02rem; font-family: inherit; font-weight: 550; color: var(--text); cursor: pointer; line-height: 1.35; }
+  .option-main.selected { border-color: var(--primary); background: #e3f2fd; }
+  .option .hear-btn { flex-shrink: 0; align-self: center; }
+  .speech-note { font-size: 0.82rem; color: var(--muted); margin: 0 0 10px; padding: 8px 10px; background: #fff8e1; border-radius: 8px; }
+  .phase-note { font-size: 0.85rem; color: var(--accent); font-weight: 650; margin: 0 0 8px; }
+  .result-number { font-size: 2.6rem; font-weight: 800; color: var(--primary-dark); line-height: 1.15; margin: 8px 0; text-align: center; }
+  .result-meta { text-align: center; color: var(--muted); font-size: 0.95rem; }
+  .me-note { text-align: center; font-size: 0.9rem; color: var(--muted); margin-top: 4px; }
+  .about-panel { font-size: 0.88rem; color: var(--muted); }
+  .about-panel h3 { font-size: 0.95rem; color: var(--text); margin: 14px 0 6px; }
+  .about-panel ul { padding-left: 1.2em; margin: 6px 0; }
+
+  .teacher-about {
+    margin: 16px 0 8px;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  .teacher-about summary {
+    cursor: pointer;
+    color: var(--muted);
+    font-weight: 600;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+  }
+  .result-timestamp {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-top: 12px;
+  }
+
+  .result-summary {
+    text-align: center;
+    font-size: 1.2rem;
+    line-height: 1.55;
+    margin: 12px 8px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .debug-panel {
+    display: none;
+    margin: 8px 0 12px;
+    padding: 10px 12px;
+    background: #263238;
+    color: #eceff1;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .debug-panel.visible { display: block; }
+  .debug-results {
+    display: none;
+    margin-top: 14px;
+    padding: 10px 12px;
+    background: #eceff1;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    text-align: left;
+  }
+  .debug-results.visible { display: block; }
+  .footer-actions { margin-top: 16px; }
+</style>
+</head>
+<body>
+  <div id="screen-start" class="screen active">
+    <h1>Basic Vocab Test — Part A</h1>
+    <p class="muted">Part A: choose the <strong>closest meaning</strong> of the underlined word. Estimates mastery of high-frequency English (Oxford 3000 bands) as 0–3000. For HK high-school ESL. Works offline.</p>
+    <div class="card">
+      <label for="studentName">Name / ID (optional)</label>
+      <input type="text" id="studentName" maxlength="80" autocomplete="name" placeholder="e.g. Chan Tai Man / 3A12">
+      <button type="button" class="btn btn-primary" id="btnStart">Start test</button>
+    </div>
+    <details class="teacher-about">
+      <summary>Teacher notes</summary>
+      <p class="muted" style="margin:8px 0 0;">Scoring, warm-up, and adaptive rules (for teachers).</p>
+      <button type="button" class="btn btn-ghost" id="btnAboutStart">About scoring &amp; design</button>
+    </details>
+  </div>
+
+  <div id="screen-about" class="screen">
+    <div class="card about-panel">
+      <h2>About this tool</h2>
+      <p><strong>Part A (closest meaning).</strong> Estimates mastery of high-frequency English (Oxford 3000–style bands) as one number from 0 to 3000. Classroom use only. Students only see the final score — band details stay in this teacher-facing note.</p>
+      <h3>Item format</h3>
+      <p>Every item shows a situational sentence with one <u>underlined</u> target word. Choose the option with the <strong>closest meaning</strong> (4 structure-matched choices). Hear the sentence and each option when speech is available.</p>
+      <h3>Opening block</h3>
+      <ul>
+        <li>Every sitting starts with <strong>8 very easy</strong> Band-1 items (closest meaning). They <strong>count in the score</strong>.</li>
+      </ul>
+      <h3>Band moves (every block of 8, including opening)</h3>
+      <ul>
+        <li>≥7/8 correct → jump <strong>+2</strong> bands</li>
+        <li>≥75% but &lt;7/8 (i.e. 6/8) → <strong>+1</strong></li>
+        <li>40–74% → stay</li>
+        <li>&lt;40% → <strong>−1</strong></li>
+      </ul>
+      <h3>Stopping &amp; final probe</h3>
+      <ul>
+        <li>Do <strong>not</strong> stop for precision while still climbing (last move up, or ≥75% on highest band with room above).</li>
+        <li>Soft aim ~12–15 min and soft item cap ~90 if not climbing; hard caps 20 min / ~100 items.</li>
+        <li>Before ending (non-hard), if highest visited band rate ≥75%, run <strong>one real probe block</strong> at the next higher band (if any), then end.</li>
+      </ul>
+      <h3>Scoring / imputation</h3>
+      <ul>
+        <li>Visited bands → empirical rate. Easier unvisited → 1.0.</li>
+        <li>Skipped mid bands (e.g. after +2 jump): treated as <strong>mastered (1.0)</strong> if surrounded by strong (≥75%) results; otherwise interpolate.</li>
+        <li>Bands above the last real high-band probe only: mild decay (×0.85 per step). If top rate &lt;40%, harder unvisited → 0.</li>
+        <li>Estimate = Σ (rate × 500), rounded, 0–3000.</li>
+      </ul>
+      <p>The running estimate is hidden until the end. Students show the single /3000 score on screen — nothing is uploaded.</p>
+      <button type="button" class="btn btn-secondary" id="btnAboutBack">Back</button>
+    </div>
+  </div>
+
+  <div id="screen-test" class="screen">
+    <div class="status-row">
+      <span id="statusLeft">Question 1</span>
+      <span id="statusRight">20:00 left</span>
+    </div>
+    <pre class="debug-panel" id="debugPanel" aria-live="polite"></pre>
+    <div class="card">
+      <div id="speechNote" class="speech-note" hidden></div>
+      <p class="prompt" id="itemPrompt">Choose the closest meaning of the <u>underlined</u> word.</p>
+      <div class="hear-row">
+        <button type="button" class="hear-btn" id="hearSentence" aria-label="Hear the sentence">
+          <span class="icon" aria-hidden="true">🔊</span> Hear sentence
+        </button>
+      </div>
+      <p class="sentence" id="sentenceText"></p>
+      <div class="options" id="optionsList" role="radiogroup" aria-label="Closest meaning choices"></div>
+      <button type="button" class="btn btn-primary" id="btnNext" disabled>Next</button>
+    </div>
+  </div>
+
+  <div id="screen-results" class="screen">
+    <div class="card">
+      <p class="result-summary" id="resultSummary"></p>
+      <pre class="debug-results" id="debugResults"></pre>
+      <div class="footer-actions">
+        <button type="button" class="btn btn-secondary" id="btnRestart">New sitting</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+
+const ITEM_BANK = [
+  {
+    "band": 1,
+    "target": "happy",
+    "sentence": "After she opened her birthday present, she looked very {happy}.",
+    "options": [
+      "glad",
+      "heavy",
+      "hungry",
+      "angry"
+    ],
+    "correct": 0,
+    "id": "b1_001"
+  },
+  {
+    "band": 1,
+    "target": "school",
+    "sentence": "Every morning the children walk together to {school}.",
+    "options": [
+      "place for study",
+      "kind of shirt",
+      "kind of sugar",
+      "kind of shadow"
+    ],
+    "correct": 0,
+    "id": "b1_002"
+  },
+  {
+    "band": 1,
+    "target": "water",
+    "sentence": "After sports the coach told us to drink cool {water}.",
+    "options": [
+      "drinkable liquid",
+      "winter weather",
+      "window glass",
+      "writer person"
+    ],
+    "correct": 0,
+    "id": "b1_003"
+  },
+  {
+    "band": 1,
+    "target": "family",
+    "sentence": "At Mid-Autumn Festival my whole {family} shares mooncakes.",
+    "options": [
+      "close relatives",
+      "busy factory",
+      "dense forest",
+      "pointing finger"
+    ],
+    "correct": 0,
+    "id": "b1_004"
+  },
+  {
+    "band": 1,
+    "target": "friend",
+    "sentence": "Tom sat next to me and became my best {friend}.",
+    "options": [
+      "close companion",
+      "kitchen fridge",
+      "airport flight",
+      "garden flower"
+    ],
+    "correct": 0,
+    "id": "b1_005"
+  },
+  {
+    "band": 1,
+    "target": "house",
+    "sentence": "They bought a small {house} near the park.",
+    "options": [
+      "home",
+      "horse",
+      "hotel",
+      "hour"
+    ],
+    "correct": 0,
+    "id": "b1_006"
+  },
+  {
+    "band": 1,
+    "target": "food",
+    "sentence": "Mum asked us to buy fresh {food} for dinner.",
+    "options": [
+      "things to eat",
+      "left human foot",
+      "short cinema film",
+      "bright camp fire"
+    ],
+    "correct": 0,
+    "id": "b1_007"
+  },
+  {
+    "band": 1,
+    "target": "book",
+    "sentence": "I borrowed a story {book} from the library.",
+    "options": [
+      "reading material",
+      "sailing boat",
+      "soccer ball",
+      "singing bird"
+    ],
+    "correct": 0,
+    "id": "b1_008"
+  },
+  {
+    "band": 1,
+    "target": "teacher",
+    "sentence": "Our English {teacher} explained the grammar again.",
+    "options": [
+      "class instructor",
+      "train ticket",
+      "dining table",
+      "road tunnel"
+    ],
+    "correct": 0,
+    "id": "b1_009"
+  },
+  {
+    "band": 1,
+    "target": "morning",
+    "sentence": "I leave home before seven in the {morning}.",
+    "options": [
+      "early daytime",
+      "high mountain",
+      "food market",
+      "club member"
+    ],
+    "correct": 0,
+    "id": "b1_010"
+  },
+  {
+    "band": 1,
+    "target": "child",
+    "sentence": "A little {child} smiled when her mother hugged her.",
+    "options": [
+      "young kid",
+      "dining chair",
+      "white cloud",
+      "wall clock"
+    ],
+    "correct": 0,
+    "id": "b1_011"
+  },
+  {
+    "band": 1,
+    "target": "money",
+    "sentence": "He saved enough {money} to buy a bicycle.",
+    "options": [
+      "cash",
+      "monkey",
+      "month",
+      "metal"
+    ],
+    "correct": 0,
+    "id": "b1_012"
+  },
+  {
+    "band": 1,
+    "target": "city",
+    "sentence": "Hong Kong is a busy {city} with tall buildings.",
+    "options": [
+      "large town",
+      "round circle",
+      "movie cinema",
+      "sweet cookie"
+    ],
+    "correct": 0,
+    "id": "b1_013"
+  },
+  {
+    "band": 1,
+    "target": "help",
+    "sentence": "Could you {help} me carry these bags upstairs?",
+    "options": [
+      "assist",
+      "hold",
+      "hope",
+      "hide"
+    ],
+    "correct": 0,
+    "id": "b1_014"
+  },
+  {
+    "band": 1,
+    "target": "play",
+    "sentence": "The children {play} football until it gets dark.",
+    "options": [
+      "join the game",
+      "make a plan",
+      "push the door",
+      "paint the wall"
+    ],
+    "correct": 0,
+    "id": "b1_015"
+  },
+  {
+    "band": 1,
+    "target": "read",
+    "sentence": "She likes to {read} a story before sleep.",
+    "options": [
+      "look at words",
+      "ride a bike",
+      "rest a while",
+      "run a race"
+    ],
+    "correct": 0,
+    "id": "b1_016"
+  },
+  {
+    "band": 1,
+    "target": "write",
+    "sentence": "Please {write} your full name at the top.",
+    "options": [
+      "put in writing",
+      "wait in line",
+      "walk in park",
+      "wash in sink"
+    ],
+    "correct": 0,
+    "id": "b1_017"
+  },
+  {
+    "band": 1,
+    "target": "listen",
+    "sentence": "Please {listen} carefully to the teacher.",
+    "options": [
+      "hear with care",
+      "leave with haste",
+      "laugh with joy",
+      "lift with force"
+    ],
+    "correct": 0,
+    "id": "b1_018"
+  },
+  {
+    "band": 1,
+    "target": "open",
+    "sentence": "Please {open} the window for fresh air.",
+    "options": [
+      "unlock",
+      "order",
+      "offer",
+      "own"
+    ],
+    "correct": 0,
+    "id": "b1_019"
+  },
+  {
+    "band": 1,
+    "target": "close",
+    "sentence": "Remember to {close} the door when you leave.",
+    "options": [
+      "shut",
+      "climb",
+      "clean",
+      "clear"
+    ],
+    "correct": 0,
+    "id": "b1_020"
+  },
+  {
+    "band": 1,
+    "target": "big",
+    "sentence": "The elephant at the zoo was very {big}.",
+    "options": [
+      "large",
+      "busy",
+      "blue",
+      "brave"
+    ],
+    "correct": 0,
+    "id": "b1_021"
+  },
+  {
+    "band": 1,
+    "target": "small",
+    "sentence": "The suitcase was too {small} for all the clothes.",
+    "options": [
+      "little",
+      "smart",
+      "soft",
+      "safe"
+    ],
+    "correct": 0,
+    "id": "b1_022"
+  },
+  {
+    "band": 1,
+    "target": "new",
+    "sentence": "She wore a bright {new} dress to the concert.",
+    "options": [
+      "fresh",
+      "next",
+      "nice",
+      "near"
+    ],
+    "correct": 0,
+    "id": "b1_023"
+  },
+  {
+    "band": 1,
+    "target": "old",
+    "sentence": "My grandfather is an {old} man with white hair.",
+    "options": [
+      "aged",
+      "only",
+      "open",
+      "own"
+    ],
+    "correct": 0,
+    "id": "b1_024"
+  },
+  {
+    "band": 1,
+    "target": "good",
+    "sentence": "The teacher said our poster was a {good} idea.",
+    "options": [
+      "fine",
+      "green",
+      "gold",
+      "grey"
+    ],
+    "correct": 0,
+    "id": "b1_025"
+  },
+  {
+    "band": 1,
+    "target": "bad",
+    "sentence": "Too much sugar is {bad} for your teeth.",
+    "options": [
+      "harmful",
+      "bigger",
+      "busier",
+      "better"
+    ],
+    "correct": 0,
+    "id": "b1_026"
+  },
+  {
+    "band": 1,
+    "target": "hot",
+    "sentence": "In August the weather feels very {hot}.",
+    "options": [
+      "heated",
+      "higher",
+      "harder",
+      "happier"
+    ],
+    "correct": 0,
+    "id": "b1_027"
+  },
+  {
+    "band": 1,
+    "target": "cold",
+    "sentence": "Put on a jacket because it is {cold}.",
+    "options": [
+      "chilly",
+      "cleaner",
+      "clearer",
+      "calmer"
+    ],
+    "correct": 0,
+    "id": "b1_028"
+  },
+  {
+    "band": 1,
+    "target": "easy",
+    "sentence": "This maths question feels quite {easy}.",
+    "options": [
+      "simple",
+      "early",
+      "empty",
+      "every"
+    ],
+    "correct": 0,
+    "id": "b1_029"
+  },
+  {
+    "band": 1,
+    "target": "hard",
+    "sentence": "Learning new characters can feel {hard}.",
+    "options": [
+      "difficult",
+      "higher",
+      "heavier",
+      "happier"
+    ],
+    "correct": 0,
+    "id": "b1_030"
+  },
+  {
+    "band": 1,
+    "target": "fast",
+    "sentence": "The Airport Express is {fast}, so we caught the flight.",
+    "options": [
+      "quick",
+      "far",
+      "fine",
+      "full"
+    ],
+    "correct": 0,
+    "id": "b1_031"
+  },
+  {
+    "band": 1,
+    "target": "slowly",
+    "sentence": "Please speak more {slowly} so I can follow.",
+    "options": [
+      "less quickly",
+      "more softly",
+      "more safely",
+      "more plainly"
+    ],
+    "correct": 0,
+    "id": "b1_032"
+  },
+  {
+    "band": 1,
+    "target": "walk",
+    "sentence": "We {walk} to school when the weather is fine.",
+    "options": [
+      "go on foot",
+      "wait a bit",
+      "wash a cup",
+      "watch a show"
+    ],
+    "correct": 0,
+    "id": "b1_033"
+  },
+  {
+    "band": 1,
+    "target": "run",
+    "sentence": "In PE we {run} around the playground twice.",
+    "options": [
+      "move fast",
+      "rest well",
+      "read more",
+      "ride home"
+    ],
+    "correct": 0,
+    "id": "b1_034"
+  },
+  {
+    "band": 1,
+    "target": "eat",
+    "sentence": "Please {eat} your lunch before it gets cold.",
+    "options": [
+      "have food",
+      "end work",
+      "earn cash",
+      "enter room"
+    ],
+    "correct": 0,
+    "id": "b1_035"
+  },
+  {
+    "band": 1,
+    "target": "drink",
+    "sentence": "You should {drink} more water on hot days.",
+    "options": [
+      "take liquid",
+      "draw lines",
+      "drive cars",
+      "drop bags"
+    ],
+    "correct": 0,
+    "id": "b1_036"
+  },
+  {
+    "band": 1,
+    "target": "sleep",
+    "sentence": "I need to {sleep} early before the exam.",
+    "options": [
+      "rest at night",
+      "speak out loud",
+      "start once more",
+      "study at home"
+    ],
+    "correct": 0,
+    "id": "b1_037"
+  },
+  {
+    "band": 1,
+    "target": "sit",
+    "sentence": "Please {sit} down and open your books.",
+    "options": [
+      "take a seat",
+      "stand up tall",
+      "sing a song",
+      "send a note"
+    ],
+    "correct": 0,
+    "id": "b1_038"
+  },
+  {
+    "band": 1,
+    "target": "stand",
+    "sentence": "Everyone must {stand} up for the school song.",
+    "options": [
+      "rise to feet",
+      "stay at home",
+      "stop the bus",
+      "start the test"
+    ],
+    "correct": 0,
+    "id": "b1_039"
+  },
+  {
+    "band": 1,
+    "target": "look",
+    "sentence": "{Look} at the board and copy the notes.",
+    "options": [
+      "use your eyes",
+      "lock the door",
+      "lose the key",
+      "lend a pen"
+    ],
+    "correct": 0,
+    "id": "b1_040"
+  },
+  {
+    "band": 1,
+    "target": "see",
+    "sentence": "Can you {see} the ferry from this window?",
+    "options": [
+      "notice with eyes",
+      "speak with words",
+      "sell with speed",
+      "send with care"
+    ],
+    "correct": 0,
+    "id": "b1_041"
+  },
+  {
+    "band": 1,
+    "target": "hear",
+    "sentence": "Did you {hear} the bell for the next lesson?",
+    "options": [
+      "notice with ears",
+      "help with bags",
+      "hold with hands",
+      "hide with care"
+    ],
+    "correct": 0,
+    "id": "b1_042"
+  },
+  {
+    "band": 1,
+    "target": "say",
+    "sentence": "Please {say} your name clearly to the class.",
+    "options": [
+      "speak the words",
+      "sit in silence",
+      "see the board",
+      "sell the goods"
+    ],
+    "correct": 0,
+    "id": "b1_043"
+  },
+  {
+    "band": 1,
+    "target": "ask",
+    "sentence": "If you do not understand, {ask} the teacher.",
+    "options": [
+      "put a question",
+      "add a number",
+      "act a part",
+      "aim a ball"
+    ],
+    "correct": 0,
+    "id": "b1_044"
+  },
+  {
+    "band": 1,
+    "target": "give",
+    "sentence": "Can you {give} me a pencil for this test?",
+    "options": [
+      "hand over",
+      "get back",
+      "go away",
+      "grow up"
+    ],
+    "correct": 0,
+    "id": "b1_045"
+  },
+  {
+    "band": 1,
+    "target": "take",
+    "sentence": "Please {take} your bag when you leave.",
+    "options": [
+      "carry away",
+      "talk more",
+      "tell stories",
+      "try again"
+    ],
+    "correct": 0,
+    "id": "b1_046"
+  },
+  {
+    "band": 1,
+    "target": "come",
+    "sentence": "Please {come} to the front of the classroom.",
+    "options": [
+      "move nearer",
+      "call later",
+      "care deeper",
+      "carry heavier"
+    ],
+    "correct": 0,
+    "id": "b1_047"
+  },
+  {
+    "band": 1,
+    "target": "go",
+    "sentence": "We {go} to the library after lunch.",
+    "options": [
+      "move away",
+      "get ready",
+      "grow tall",
+      "guess right"
+    ],
+    "correct": 0,
+    "id": "b1_048"
+  },
+  {
+    "band": 1,
+    "target": "day",
+    "sentence": "We have PE every {day} except Friday.",
+    "options": [
+      "daylight time",
+      "front door",
+      "school desk",
+      "dirty dish"
+    ],
+    "correct": 0,
+    "id": "b1_049"
+  },
+  {
+    "band": 1,
+    "target": "night",
+    "sentence": "The streets are quiet late at {night}.",
+    "options": [
+      "dark time",
+      "bright noon",
+      "full name",
+      "short note"
+    ],
+    "correct": 0,
+    "id": "b1_050"
+  },
+  {
+    "band": 2,
+    "target": "decide",
+    "sentence": "We need to {decide} which city to visit for Easter.",
+    "options": [
+      "choose",
+      "describe",
+      "destroy",
+      "deliver"
+    ],
+    "correct": 0,
+    "id": "b2_051"
+  },
+  {
+    "band": 2,
+    "target": "explain",
+    "sentence": "Can you {explain} the experiment steps again?",
+    "options": [
+      "make clear",
+      "expect fully",
+      "express freely",
+      "explore widely"
+    ],
+    "correct": 0,
+    "id": "b2_052"
+  },
+  {
+    "band": 2,
+    "target": "improve",
+    "sentence": "Daily practice will {improve} your English.",
+    "options": [
+      "make better",
+      "include also",
+      "invite kindly",
+      "imagine freely"
+    ],
+    "correct": 0,
+    "id": "b2_053"
+  },
+  {
+    "band": 2,
+    "target": "prepare",
+    "sentence": "Students should {prepare} for Monday's exam.",
+    "options": [
+      "get ready",
+      "prefer more",
+      "protect well",
+      "provide also"
+    ],
+    "correct": 0,
+    "id": "b2_054"
+  },
+  {
+    "band": 2,
+    "target": "suggest",
+    "sentence": "I {suggest} we meet at the library after school.",
+    "options": [
+      "propose",
+      "support",
+      "succeed",
+      "survive"
+    ],
+    "correct": 0,
+    "id": "b2_055"
+  },
+  {
+    "band": 2,
+    "target": "compare",
+    "sentence": "Please {compare} the two paragraphs carefully.",
+    "options": [
+      "set side by side",
+      "bring to an end",
+      "keep on the path",
+      "keep under tight control"
+    ],
+    "correct": 0,
+    "id": "b2_056"
+  },
+  {
+    "band": 2,
+    "target": "describe",
+    "sentence": "{Describe} the photo in detail for the oral exam.",
+    "options": [
+      "tell about",
+      "tear apart",
+      "hand across",
+      "find out"
+    ],
+    "correct": 0,
+    "id": "b2_057"
+  },
+  {
+    "band": 2,
+    "target": "discover",
+    "sentence": "Scientists hope to {discover} new fossils soon.",
+    "options": [
+      "find",
+      "discuss",
+      "divide",
+      "develop"
+    ],
+    "correct": 0,
+    "id": "b2_058"
+  },
+  {
+    "band": 2,
+    "target": "develop",
+    "sentence": "The club plans to {develop} a simple phone app.",
+    "options": [
+      "build up",
+      "depend on",
+      "destroy all",
+      "demand more"
+    ],
+    "correct": 0,
+    "id": "b2_059"
+  },
+  {
+    "band": 2,
+    "target": "provide",
+    "sentence": "The school will {provide} free lunch for some students.",
+    "options": [
+      "supply",
+      "prevent",
+      "predict",
+      "prefer"
+    ],
+    "correct": 0,
+    "id": "b2_060"
+  },
+  {
+    "band": 2,
+    "target": "require",
+    "sentence": "This job will {require} strong communication skills.",
+    "options": [
+      "need",
+      "reduce",
+      "refuse",
+      "remove"
+    ],
+    "correct": 0,
+    "id": "b2_061"
+  },
+  {
+    "band": 2,
+    "target": "achieve",
+    "sentence": "She worked hard to {achieve} her running goal.",
+    "options": [
+      "reach",
+      "accept",
+      "agree",
+      "allow"
+    ],
+    "correct": 0,
+    "id": "b2_062"
+  },
+  {
+    "band": 2,
+    "target": "experience",
+    "sentence": "Travel alone gave him valuable life {experience}.",
+    "options": [
+      "knowledge from doing",
+      "exercise for fitness",
+      "example for learning",
+      "expense for travel"
+    ],
+    "correct": 0,
+    "id": "b2_063"
+  },
+  {
+    "band": 2,
+    "target": "opportunity",
+    "sentence": "This workshop is a great {opportunity} to learn coding.",
+    "options": [
+      "good chance",
+      "personal opinion",
+      "medical operation",
+      "living organism"
+    ],
+    "correct": 0,
+    "id": "b2_064"
+  },
+  {
+    "band": 2,
+    "target": "information",
+    "sentence": "The website has useful {information} about tickets.",
+    "options": [
+      "useful facts",
+      "new invention",
+      "party invitation",
+      "music instrument"
+    ],
+    "correct": 0,
+    "id": "b2_065"
+  },
+  {
+    "band": 2,
+    "target": "situation",
+    "sentence": "In this {situation}, stay calm and call a teacher.",
+    "options": [
+      "set of circumstances",
+      "final clear solution",
+      "nearby train station",
+      "helpful new suggestion"
+    ],
+    "correct": 0,
+    "id": "b2_066"
+  },
+  {
+    "band": 2,
+    "target": "environment",
+    "sentence": "We should protect the natural {environment}.",
+    "options": [
+      "natural surroundings",
+      "public entertainment",
+      "sports equipment",
+      "formal education"
+    ],
+    "correct": 0,
+    "id": "b2_067"
+  },
+  {
+    "band": 2,
+    "target": "community",
+    "sentence": "Our local {community} organised a clean-up day.",
+    "options": [
+      "local people",
+      "large company",
+      "whole country",
+      "home computer"
+    ],
+    "correct": 0,
+    "id": "b2_068"
+  },
+  {
+    "band": 2,
+    "target": "important",
+    "sentence": "It is {important} to sleep well before an exam.",
+    "options": [
+      "of great value",
+      "not possible now",
+      "happening at once",
+      "fully independent now"
+    ],
+    "correct": 0,
+    "id": "b2_069"
+  },
+  {
+    "band": 2,
+    "target": "necessary",
+    "sentence": "A passport is {necessary} for travel abroad.",
+    "options": [
+      "really needed",
+      "from nature",
+      "too negative",
+      "too normal"
+    ],
+    "correct": 0,
+    "id": "b2_070"
+  },
+  {
+    "band": 2,
+    "target": "possible",
+    "sentence": "Is it {possible} to finish the homework tonight?",
+    "options": [
+      "able to be done",
+      "liked by many people",
+      "kept as a secret",
+      "useful in daily life"
+    ],
+    "correct": 0,
+    "id": "b2_071"
+  },
+  {
+    "band": 2,
+    "target": "available",
+    "sentence": "Are any seats {available} on the early train?",
+    "options": [
+      "free to obtain",
+      "able to perform",
+      "kept as active",
+      "made fully aware"
+    ],
+    "correct": 0,
+    "id": "b2_072"
+  },
+  {
+    "band": 2,
+    "target": "similar",
+    "sentence": "These two paintings look quite {similar}.",
+    "options": [
+      "much alike",
+      "too simple",
+      "too serious",
+      "too special"
+    ],
+    "correct": 0,
+    "id": "b2_073"
+  },
+  {
+    "band": 2,
+    "target": "different",
+    "sentence": "His opinion is {different} from mine.",
+    "options": [
+      "not the same",
+      "too hard now",
+      "too direct now",
+      "each day now"
+    ],
+    "correct": 0,
+    "id": "b2_074"
+  },
+  {
+    "band": 2,
+    "target": "popular",
+    "sentence": "This singer is very {popular} among teenagers.",
+    "options": [
+      "liked by many",
+      "kept as private",
+      "nearly perfect now",
+      "very powerful now"
+    ],
+    "correct": 0,
+    "id": "b2_075"
+  },
+  {
+    "band": 2,
+    "target": "successful",
+    "sentence": "After years of work, her bakery became {successful}.",
+    "options": [
+      "achieving good results",
+      "happening very suddenly",
+      "fitting the purpose",
+      "causing real surprise"
+    ],
+    "correct": 0,
+    "id": "b2_076"
+  },
+  {
+    "band": 2,
+    "target": "comfortable",
+    "sentence": "These shoes are soft and {comfortable}.",
+    "options": [
+      "pleasant to wear",
+      "done with care",
+      "common and usual",
+      "fully complete now"
+    ],
+    "correct": 0,
+    "id": "b2_077"
+  },
+  {
+    "band": 2,
+    "target": "confident",
+    "sentence": "She felt {confident} before her speech.",
+    "options": [
+      "sure of oneself",
+      "full of confusion",
+      "full of convenience",
+      "full of curiosity"
+    ],
+    "correct": 0,
+    "id": "b2_078"
+  },
+  {
+    "band": 2,
+    "target": "responsible",
+    "sentence": "Parents are {responsible} for children's safety.",
+    "options": [
+      "having the duty",
+      "showing good sense",
+      "happening just lately",
+      "happening on schedule"
+    ],
+    "correct": 0,
+    "id": "b2_079"
+  },
+  {
+    "band": 2,
+    "target": "traditional",
+    "sentence": "They wore {traditional} clothes for the festival.",
+    "options": [
+      "following old local customs",
+      "typical of most days",
+      "terrible to go through",
+      "technical in every way"
+    ],
+    "correct": 0,
+    "id": "b2_080"
+  },
+  {
+    "band": 2,
+    "target": "immediately",
+    "sentence": "Call the nurse {immediately} if the pain gets worse.",
+    "options": [
+      "right away",
+      "in return",
+      "as well",
+      "in truth"
+    ],
+    "correct": 0,
+    "id": "b2_081"
+  },
+  {
+    "band": 2,
+    "target": "especially",
+    "sentence": "I enjoy outdoor sports, {especially} hiking.",
+    "options": [
+      "most of all",
+      "word for word",
+      "in the end",
+      "all the while"
+    ],
+    "correct": 0,
+    "id": "b2_082"
+  },
+  {
+    "band": 2,
+    "target": "continue",
+    "sentence": "Please {continue} reading until the end of the page.",
+    "options": [
+      "keep going",
+      "hold inside",
+      "take charge",
+      "bring together"
+    ],
+    "correct": 0,
+    "id": "b2_083"
+  },
+  {
+    "band": 2,
+    "target": "remember",
+    "sentence": "{Remember} to bring your sports shoes tomorrow.",
+    "options": [
+      "keep in mind",
+      "take away now",
+      "make much less",
+      "turn down flat"
+    ],
+    "correct": 0,
+    "id": "b2_084"
+  },
+  {
+    "band": 2,
+    "target": "forget",
+    "sentence": "Don't {forget} your lunch box on the bus.",
+    "options": [
+      "fail to recall",
+      "fully forgive now",
+      "closely follow now",
+      "finally finish now"
+    ],
+    "correct": 0,
+    "id": "b2_085"
+  },
+  {
+    "band": 2,
+    "target": "prefer",
+    "sentence": "I {prefer} tea to coffee in the morning.",
+    "options": [
+      "like better",
+      "stop early",
+      "say early",
+      "get ready"
+    ],
+    "correct": 0,
+    "id": "b2_086"
+  },
+  {
+    "band": 2,
+    "target": "enjoy",
+    "sentence": "Many students {enjoy} the after-school drama club.",
+    "options": [
+      "take pleasure in",
+      "walk straight into",
+      "wait patiently for",
+      "talk openly about"
+    ],
+    "correct": 0,
+    "id": "b2_087"
+  },
+  {
+    "band": 2,
+    "target": "agree",
+    "sentence": "Do you {agree} with the team's final choice?",
+    "options": [
+      "say yes",
+      "argue on",
+      "allow in",
+      "steer clear"
+    ],
+    "correct": 0,
+    "id": "b2_088"
+  },
+  {
+    "band": 2,
+    "target": "refuse",
+    "sentence": "He will {refuse} to copy answers in the test.",
+    "options": [
+      "say no",
+      "cut back",
+      "take out",
+      "call for"
+    ],
+    "correct": 0,
+    "id": "b2_089"
+  },
+  {
+    "band": 2,
+    "target": "accept",
+    "sentence": "She decided to {accept} the club leader role.",
+    "options": [
+      "agree to take",
+      "blame without cause",
+      "keep away from",
+      "offer advice on"
+    ],
+    "correct": 0,
+    "id": "b2_090"
+  },
+  {
+    "band": 2,
+    "target": "allow",
+    "sentence": "Teachers {allow} phones only after school hours.",
+    "options": [
+      "give permission",
+      "keep away",
+      "say yes",
+      "put something"
+    ],
+    "correct": 0,
+    "id": "b2_091"
+  },
+  {
+    "band": 2,
+    "target": "avoid",
+    "sentence": "Try to {avoid} noisy games near the library.",
+    "options": [
+      "keep away from",
+      "give full permission",
+      "say yes then",
+      "put something on"
+    ],
+    "correct": 0,
+    "id": "b2_092"
+  },
+  {
+    "band": 2,
+    "target": "include",
+    "sentence": "Does the price {include} the museum ticket?",
+    "options": [
+      "count as part",
+      "invite with care",
+      "make much better",
+      "tell right away"
+    ],
+    "correct": 0,
+    "id": "b2_093"
+  },
+  {
+    "band": 2,
+    "target": "increase",
+    "sentence": "Practice can {increase} your reading speed.",
+    "options": [
+      "make much larger",
+      "invite with care",
+      "count as part",
+      "tell right away"
+    ],
+    "correct": 0,
+    "id": "b2_094"
+  },
+  {
+    "band": 2,
+    "target": "decrease",
+    "sentence": "Less sugar can {decrease} tooth problems.",
+    "options": [
+      "make much smaller",
+      "choose carefully now",
+      "deliver quickly now",
+      "depend heavily now"
+    ],
+    "correct": 0,
+    "id": "b2_095"
+  },
+  {
+    "band": 2,
+    "target": "collect",
+    "sentence": "Please {collect} all the worksheets before leaving.",
+    "options": [
+      "gather together",
+      "correct carefully",
+      "connect firmly",
+      "control tightly"
+    ],
+    "correct": 0,
+    "id": "b2_096"
+  },
+  {
+    "band": 2,
+    "target": "connect",
+    "sentence": "This wire will {connect} the speaker to the laptop.",
+    "options": [
+      "join together",
+      "gather together",
+      "correct carefully",
+      "control tightly"
+    ],
+    "correct": 0,
+    "id": "b2_097"
+  },
+  {
+    "band": 2,
+    "target": "correct",
+    "sentence": "Please {correct} the spelling mistakes in red.",
+    "options": [
+      "make accurate",
+      "gather together",
+      "join together",
+      "control tightly"
+    ],
+    "correct": 0,
+    "id": "b2_098"
+  },
+  {
+    "band": 2,
+    "target": "complete",
+    "sentence": "{Complete} the form before you submit it.",
+    "options": [
+      "finish fully",
+      "compete hard",
+      "complain loudly",
+      "compare carefully"
+    ],
+    "correct": 0,
+    "id": "b2_099"
+  },
+  {
+    "band": 2,
+    "target": "create",
+    "sentence": "Students will {create} a poster about recycling.",
+    "options": [
+      "make newly",
+      "criticise harshly",
+      "correct carefully",
+      "collect quickly"
+    ],
+    "correct": 0,
+    "id": "b2_100"
+  },
+  {
+    "band": 3,
+    "target": "analyse",
+    "sentence": "Students must {analyse} the lab data before writing.",
+    "options": [
+      "examine in detail",
+      "announce in public",
+      "arrange in order",
+      "assume without proof"
+    ],
+    "correct": 0,
+    "id": "b3_101"
+  },
+  {
+    "band": 3,
+    "target": "assume",
+    "sentence": "Don't {assume} quiet students don't understand.",
+    "options": [
+      "believe without proof",
+      "attract more notice",
+      "avoid the problem",
+      "admit the mistake"
+    ],
+    "correct": 0,
+    "id": "b3_102"
+  },
+  {
+    "band": 3,
+    "target": "benefit",
+    "sentence": "Daily walking can {benefit} body and mind.",
+    "options": [
+      "do good for",
+      "belong jointly to",
+      "behave properly now",
+      "believe wholly now"
+    ],
+    "correct": 0,
+    "id": "b3_103"
+  },
+  {
+    "band": 3,
+    "target": "challenge",
+    "sentence": "Cooking alone was a real {challenge} for him.",
+    "options": [
+      "difficult task",
+      "lucky chance",
+      "sudden change",
+      "extra charge"
+    ],
+    "correct": 0,
+    "id": "b3_104"
+  },
+  {
+    "band": 3,
+    "target": "conclude",
+    "sentence": "From the evidence we can {conclude} the plan worked.",
+    "options": [
+      "decide after thinking",
+      "confirm without doubt",
+      "consider with care",
+      "contain without leak"
+    ],
+    "correct": 0,
+    "id": "b3_105"
+  },
+  {
+    "band": 3,
+    "target": "contribute",
+    "sentence": "Everyone should {contribute} ideas to the project.",
+    "options": [
+      "give as a share",
+      "control with more force",
+      "continue without a stop",
+      "convince with more words"
+    ],
+    "correct": 0,
+    "id": "b3_106"
+  },
+  {
+    "band": 3,
+    "target": "demonstrate",
+    "sentence": "The teacher will {demonstrate} how to solve it.",
+    "options": [
+      "show by doing",
+      "demand with force",
+      "deliver with care",
+      "depend with trust"
+    ],
+    "correct": 0,
+    "id": "b3_107"
+  },
+  {
+    "band": 3,
+    "target": "encourage",
+    "sentence": "Parents should {encourage} children to read more.",
+    "options": [
+      "give support to",
+      "make possible for",
+      "make certain of",
+      "set firmly up"
+    ],
+    "correct": 0,
+    "id": "b3_108"
+  },
+  {
+    "band": 3,
+    "target": "establish",
+    "sentence": "The club hopes to {establish} a study centre.",
+    "options": [
+      "set up newly",
+      "estimate roughly now",
+      "examine closely now",
+      "exchange freely now"
+    ],
+    "correct": 0,
+    "id": "b3_109"
+  },
+  {
+    "band": 3,
+    "target": "evaluate",
+    "sentence": "Teachers {evaluate} speaking with a clear rubric.",
+    "options": [
+      "judge the quality",
+      "escape from danger",
+      "expand the business",
+      "express an opinion"
+    ],
+    "correct": 0,
+    "id": "b3_110"
+  },
+  {
+    "band": 3,
+    "target": "identify",
+    "sentence": "{Identify} the main idea of the paragraph.",
+    "options": [
+      "point out",
+      "pass over",
+      "think up",
+      "count in"
+    ],
+    "correct": 0,
+    "id": "b3_111"
+  },
+  {
+    "band": 3,
+    "target": "indicate",
+    "sentence": "The arrow will {indicate} the way to the hall.",
+    "options": [
+      "point toward",
+      "influence strongly",
+      "inform quickly",
+      "intend seriously"
+    ],
+    "correct": 0,
+    "id": "b3_112"
+  },
+  {
+    "band": 3,
+    "target": "maintain",
+    "sentence": "It is hard to {maintain} study-rest balance.",
+    "options": [
+      "keep the same",
+      "manage the shop",
+      "measure the length",
+      "mention the name"
+    ],
+    "correct": 0,
+    "id": "b3_113"
+  },
+  {
+    "band": 3,
+    "target": "obtain",
+    "sentence": "You need to {obtain} a ticket at the front desk.",
+    "options": [
+      "get possession of",
+      "observe with care",
+      "occur by chance",
+      "offer a discount"
+    ],
+    "correct": 0,
+    "id": "b3_114"
+  },
+  {
+    "band": 3,
+    "target": "persuade",
+    "sentence": "She tried to {persuade} her parents about the trip.",
+    "options": [
+      "convince to agree",
+      "perform on stage",
+      "permit to enter",
+      "prefer to drink"
+    ],
+    "correct": 0,
+    "id": "b3_115"
+  },
+  {
+    "band": 3,
+    "target": "recognise",
+    "sentence": "I didn't {recognise} him with the new haircut.",
+    "options": [
+      "know again",
+      "speak for",
+      "cut down",
+      "turn down"
+    ],
+    "correct": 0,
+    "id": "b3_116"
+  },
+  {
+    "band": 3,
+    "target": "approach",
+    "sentence": "We need a new {approach} to this problem.",
+    "options": [
+      "way of handling",
+      "formal apology now",
+      "outer appearance now",
+      "job application now"
+    ],
+    "correct": 0,
+    "id": "b3_117"
+  },
+  {
+    "band": 3,
+    "target": "attitude",
+    "sentence": "A positive {attitude} helps you learn faster.",
+    "options": [
+      "way of feeling",
+      "close attention now",
+      "tourist attraction now",
+      "legal authority now"
+    ],
+    "correct": 0,
+    "id": "b3_118"
+  },
+  {
+    "band": 3,
+    "target": "consequence",
+    "sentence": "One {consequence} of skipping class is falling behind.",
+    "options": [
+      "result that follows",
+      "large conference meeting",
+      "inner personal confidence",
+      "train station connection"
+    ],
+    "correct": 0,
+    "id": "b3_119"
+  },
+  {
+    "band": 3,
+    "target": "evidence",
+    "sentence": "There is strong {evidence} that reading helps vocabulary.",
+    "options": [
+      "facts that support",
+      "special public event",
+      "clear classroom example",
+      "past life practice"
+    ],
+    "correct": 0,
+    "id": "b3_120"
+  },
+  {
+    "band": 3,
+    "target": "feature",
+    "sentence": "The phone's best {feature} is long battery life.",
+    "options": [
+      "important quality",
+      "complete failure",
+      "latest fashion",
+      "special favour"
+    ],
+    "correct": 0,
+    "id": "b3_121"
+  },
+  {
+    "band": 3,
+    "target": "impact",
+    "sentence": "Social media can have a big {impact} on sleep.",
+    "options": [
+      "strong effect",
+      "public image",
+      "serious issue",
+      "single item"
+    ],
+    "correct": 0,
+    "id": "b3_122"
+  },
+  {
+    "band": 3,
+    "target": "method",
+    "sentence": "This study {method} works well for many students.",
+    "options": [
+      "organised way",
+      "text message",
+      "careless mistake",
+      "fashion model"
+    ],
+    "correct": 0,
+    "id": "b3_123"
+  },
+  {
+    "band": 3,
+    "target": "perspective",
+    "sentence": "Try another {perspective} on the problem.",
+    "options": [
+      "point of view",
+      "official time leave",
+      "stage show act",
+      "personal life style"
+    ],
+    "correct": 0,
+    "id": "b3_124"
+  },
+  {
+    "band": 3,
+    "target": "strategy",
+    "sentence": "Our team needs a clear {strategy} for the debate.",
+    "options": [
+      "overall plan",
+      "quality level",
+      "formal words",
+      "building shape"
+    ],
+    "correct": 0,
+    "id": "b3_125"
+  },
+  {
+    "band": 3,
+    "target": "significant",
+    "sentence": "She showed a {significant} rise in test scores.",
+    "options": [
+      "important in amount",
+      "similar in appearance",
+      "specific in detail",
+      "successful in ending"
+    ],
+    "correct": 0,
+    "id": "b3_126"
+  },
+  {
+    "band": 3,
+    "target": "appropriate",
+    "sentence": "Wear {appropriate} clothes for the formal dinner.",
+    "options": [
+      "suitable for occasion",
+      "apparent at once",
+      "available for use",
+      "average in level"
+    ],
+    "correct": 0,
+    "id": "b3_127"
+  },
+  {
+    "band": 3,
+    "target": "complex",
+    "sentence": "The machine instructions are quite {complex}.",
+    "options": [
+      "hard to follow",
+      "common to all",
+      "complete in form",
+      "correct in fact"
+    ],
+    "correct": 0,
+    "id": "b3_128"
+  },
+  {
+    "band": 3,
+    "target": "efficient",
+    "sentence": "An {efficient} transport system saves time.",
+    "options": [
+      "saving time well",
+      "causing good effect",
+      "showing top quality",
+      "reaching extreme degree"
+    ],
+    "correct": 0,
+    "id": "b3_129"
+  },
+  {
+    "band": 3,
+    "target": "relevant",
+    "sentence": "Include only {relevant} details in your essay.",
+    "options": [
+      "related to topic",
+      "recent in time",
+      "regular in habit",
+      "reliable in use"
+    ],
+    "correct": 0,
+    "id": "b3_130"
+  },
+  {
+    "band": 3,
+    "target": "sufficient",
+    "sentence": "Is there {sufficient} food for everyone?",
+    "options": [
+      "enough for purpose",
+      "suitable for children",
+      "sudden in change",
+      "successful in ending"
+    ],
+    "correct": 0,
+    "id": "b3_131"
+  },
+  {
+    "band": 3,
+    "target": "gradually",
+    "sentence": "Her confidence {gradually} improved over the year.",
+    "options": [
+      "slowly over time",
+      "generally speaking now",
+      "greatly in amount",
+      "gently in manner"
+    ],
+    "correct": 0,
+    "id": "b3_132"
+  },
+  {
+    "band": 3,
+    "target": "expand",
+    "sentence": "The school plans to {expand} the sports hall.",
+    "options": [
+      "make larger",
+      "expect fully",
+      "explain fully",
+      "explore widely"
+    ],
+    "correct": 0,
+    "id": "b3_133"
+  },
+  {
+    "band": 3,
+    "target": "reduce",
+    "sentence": "We should {reduce} plastic waste in the canteen.",
+    "options": [
+      "make smaller",
+      "refuse flatly",
+      "remove fully",
+      "require strongly"
+    ],
+    "correct": 0,
+    "id": "b3_134"
+  },
+  {
+    "band": 3,
+    "target": "remove",
+    "sentence": "Please {remove} your bags from the aisle.",
+    "options": [
+      "take away",
+      "make smaller",
+      "refuse flatly",
+      "require strongly"
+    ],
+    "correct": 0,
+    "id": "b3_135"
+  },
+  {
+    "band": 3,
+    "target": "replace",
+    "sentence": "Can we {replace} the broken mouse with a new one?",
+    "options": [
+      "put instead",
+      "make smaller",
+      "turn down",
+      "do again"
+    ],
+    "correct": 0,
+    "id": "b3_136"
+  },
+  {
+    "band": 3,
+    "target": "repeat",
+    "sentence": "{Repeat} the key words after the teacher.",
+    "options": [
+      "do once more",
+      "put in place",
+      "tell the news",
+      "give it back"
+    ],
+    "correct": 0,
+    "id": "b3_137"
+  },
+  {
+    "band": 3,
+    "target": "return",
+    "sentence": "Please {return} the library books by Friday.",
+    "options": [
+      "give back",
+      "do again",
+      "tell news",
+      "turn down"
+    ],
+    "correct": 0,
+    "id": "b3_138"
+  },
+  {
+    "band": 3,
+    "target": "report",
+    "sentence": "{Report} any bullying to a trusted teacher.",
+    "options": [
+      "tell officially",
+      "give it",
+      "do once",
+      "refuse flatly"
+    ],
+    "correct": 0,
+    "id": "b3_139"
+  },
+  {
+    "band": 3,
+    "target": "respond",
+    "sentence": "Please {respond} to the email before Friday.",
+    "options": [
+      "reply back",
+      "tell news",
+      "give back",
+      "do again"
+    ],
+    "correct": 0,
+    "id": "b3_140"
+  },
+  {
+    "band": 3,
+    "target": "support",
+    "sentence": "Parents {support} students during exam week.",
+    "options": [
+      "give backing",
+      "make suggestion",
+      "find success",
+      "stay living"
+    ],
+    "correct": 0,
+    "id": "b3_141"
+  },
+  {
+    "band": 3,
+    "target": "survive",
+    "sentence": "Desert plants can {survive} with little water.",
+    "options": [
+      "stay living",
+      "give backing",
+      "make suggestion",
+      "find success"
+    ],
+    "correct": 0,
+    "id": "b3_142"
+  },
+  {
+    "band": 3,
+    "target": "succeed",
+    "sentence": "With practice, many learners {succeed} in oral exams.",
+    "options": [
+      "find success",
+      "give backing",
+      "make suggestion",
+      "stay living"
+    ],
+    "correct": 0,
+    "id": "b3_143"
+  },
+  {
+    "band": 3,
+    "target": "consider",
+    "sentence": "{Consider} both sides before you vote.",
+    "options": [
+      "think carefully about",
+      "conclude finally about",
+      "contain carefully inside",
+      "control firmly today"
+    ],
+    "correct": 0,
+    "id": "b3_144"
+  },
+  {
+    "band": 3,
+    "target": "contain",
+    "sentence": "This box may {contain} fragile glass.",
+    "options": [
+      "hold inside",
+      "think about",
+      "control tightly",
+      "continue onward"
+    ],
+    "correct": 0,
+    "id": "b3_145"
+  },
+  {
+    "band": 3,
+    "target": "focus",
+    "sentence": "{Focus} on the main idea, not small details.",
+    "options": [
+      "direct attention",
+      "follow closely",
+      "force strongly",
+      "form quickly"
+    ],
+    "correct": 0,
+    "id": "b3_146"
+  },
+  {
+    "band": 3,
+    "target": "follow",
+    "sentence": "{Follow} the safety rules in the science lab.",
+    "options": [
+      "go along with",
+      "pay attention to",
+      "push hard against",
+      "take shape as"
+    ],
+    "correct": 0,
+    "id": "b3_147"
+  },
+  {
+    "band": 3,
+    "target": "organise",
+    "sentence": "Please {organise} your notes by topic.",
+    "options": [
+      "arrange neatly",
+      "offer freely",
+      "order strictly",
+      "open widely"
+    ],
+    "correct": 0,
+    "id": "b3_148"
+  },
+  {
+    "band": 3,
+    "target": "produce",
+    "sentence": "Factories {produce} goods for everyday use.",
+    "options": [
+      "make or create",
+      "guard with care",
+      "give out freely",
+      "like much more"
+    ],
+    "correct": 0,
+    "id": "b3_149"
+  },
+  {
+    "band": 3,
+    "target": "protect",
+    "sentence": "Wear a helmet to {protect} your head.",
+    "options": [
+      "keep from harm",
+      "make or create",
+      "give out freely",
+      "like much more"
+    ],
+    "correct": 0,
+    "id": "b3_150"
+  },
+  {
+    "band": 4,
+    "target": "acquire",
+    "sentence": "Living abroad helped her {acquire} spoken fluency.",
+    "options": [
+      "gain",
+      "accuse",
+      "adapt",
+      "admire"
+    ],
+    "correct": 0,
+    "id": "b4_151"
+  },
+  {
+    "band": 4,
+    "target": "anticipate",
+    "sentence": "Few drivers could {anticipate} such heavy traffic.",
+    "options": [
+      "expect in advance",
+      "appreciate with thanks",
+      "approve with pleasure",
+      "arrange with care"
+    ],
+    "correct": 0,
+    "id": "b4_152"
+  },
+  {
+    "band": 4,
+    "target": "assess",
+    "sentence": "Teachers {assess} speaking each term.",
+    "options": [
+      "judge the level",
+      "assist with kindness",
+      "assume without proof",
+      "attach with glue"
+    ],
+    "correct": 0,
+    "id": "b4_153"
+  },
+  {
+    "band": 4,
+    "target": "clarify",
+    "sentence": "Could you {clarify} what you mean by success?",
+    "options": [
+      "make clearer",
+      "claim ownership",
+      "classify items",
+      "collect samples"
+    ],
+    "correct": 0,
+    "id": "b4_154"
+  },
+  {
+    "band": 4,
+    "target": "commit",
+    "sentence": "Athletes must {commit} to regular training.",
+    "options": [
+      "promise seriously",
+      "compete fiercely",
+      "complain loudly",
+      "confirm quickly"
+    ],
+    "correct": 0,
+    "id": "b4_155"
+  },
+  {
+    "band": 4,
+    "target": "comprise",
+    "sentence": "The committee will {comprise} five teachers.",
+    "options": [
+      "be made up of",
+      "be set next to",
+      "be brought to end",
+      "be put together as"
+    ],
+    "correct": 0,
+    "id": "b4_156"
+  },
+  {
+    "band": 4,
+    "target": "constitute",
+    "sentence": "These rules {constitute} the club's basic code.",
+    "options": [
+      "make up",
+      "build up",
+      "ask about",
+      "use up"
+    ],
+    "correct": 0,
+    "id": "b4_157"
+  },
+  {
+    "band": 4,
+    "target": "convey",
+    "sentence": "Her smile can {convey} warmth without words.",
+    "options": [
+      "express",
+      "convert",
+      "convince",
+      "cover"
+    ],
+    "correct": 0,
+    "id": "b4_158"
+  },
+  {
+    "band": 4,
+    "target": "derive",
+    "sentence": "Many English words {derive} from Latin.",
+    "options": [
+      "come from",
+      "deserve prize",
+      "design poster",
+      "detect problem"
+    ],
+    "correct": 0,
+    "id": "b4_159"
+  },
+  {
+    "band": 4,
+    "target": "emerge",
+    "sentence": "New leaders often {emerge} during a crisis.",
+    "options": [
+      "come into view",
+      "emphasise a point",
+      "enable a tool",
+      "endure a hardship"
+    ],
+    "correct": 0,
+    "id": "b4_160"
+  },
+  {
+    "band": 4,
+    "target": "enhance",
+    "sentence": "Good lighting can {enhance} a room's look.",
+    "options": [
+      "improve the quality",
+      "ensure the safety",
+      "entitle the holder",
+      "exclude the outsiders"
+    ],
+    "correct": 0,
+    "id": "b4_161"
+  },
+  {
+    "band": 4,
+    "target": "illustrate",
+    "sentence": "This graph will {illustrate} sales growth.",
+    "options": [
+      "show by example",
+      "imitate by copying",
+      "imply by hinting",
+      "impose by forcing"
+    ],
+    "correct": 0,
+    "id": "b4_162"
+  },
+  {
+    "band": 4,
+    "target": "implement",
+    "sentence": "The school will {implement} the new timetable.",
+    "options": [
+      "put into practice",
+      "imply without saying",
+      "impress the audience",
+      "improve only slightly"
+    ],
+    "correct": 0,
+    "id": "b4_163"
+  },
+  {
+    "band": 4,
+    "target": "interpret",
+    "sentence": "How do you {interpret} the story's ending?",
+    "options": [
+      "explain the meaning",
+      "interrupt the speaker",
+      "interview the guest",
+      "invent the story"
+    ],
+    "correct": 0,
+    "id": "b4_164"
+  },
+  {
+    "band": 4,
+    "target": "justify",
+    "sentence": "You must {justify} your choice with reasons.",
+    "options": [
+      "give good reasons",
+      "judge too harshly",
+      "join the club",
+      "jump straight ahead"
+    ],
+    "correct": 0,
+    "id": "b4_165"
+  },
+  {
+    "band": 4,
+    "target": "negotiate",
+    "sentence": "The sides tried to {negotiate} a fair deal.",
+    "options": [
+      "discuss to agree",
+      "neglect the duties",
+      "nominate a candidate",
+      "notice a detail"
+    ],
+    "correct": 0,
+    "id": "b4_166"
+  },
+  {
+    "band": 4,
+    "target": "criterion",
+    "sentence": "One key {criterion} for selection is teamwork.",
+    "options": [
+      "standard for judging",
+      "serious public crisis",
+      "harsh public criticism",
+      "shared local culture"
+    ],
+    "correct": 0,
+    "id": "b4_167"
+  },
+  {
+    "band": 4,
+    "target": "dimension",
+    "sentence": "The problem has an emotional {dimension} too.",
+    "options": [
+      "aspect of situation",
+      "final key decision",
+      "travel route direction",
+      "group open discussion"
+    ],
+    "correct": 0,
+    "id": "b4_168"
+  },
+  {
+    "band": 4,
+    "target": "hypothesis",
+    "sentence": "Scientists tested the {hypothesis} carefully.",
+    "options": [
+      "idea to be tested",
+      "hospital in the city",
+      "household of the family",
+      "humour of dry kind"
+    ],
+    "correct": 0,
+    "id": "b4_169"
+  },
+  {
+    "band": 4,
+    "target": "implication",
+    "sentence": "The {implication} of this policy is unclear.",
+    "options": [
+      "possible side effect",
+      "first strong impression",
+      "clear real improvement",
+      "set of instructions"
+    ],
+    "correct": 0,
+    "id": "b4_170"
+  },
+  {
+    "band": 4,
+    "target": "incentive",
+    "sentence": "Bonus points can be an {incentive} to finish early.",
+    "options": [
+      "something that motivates",
+      "unexpected small incident",
+      "monthly regular income",
+      "single clear instance"
+    ],
+    "correct": 0,
+    "id": "b4_171"
+  },
+  {
+    "band": 4,
+    "target": "outcome",
+    "sentence": "The final {outcome} of the vote surprised everyone.",
+    "options": [
+      "result",
+      "output",
+      "outline",
+      "option"
+    ],
+    "correct": 0,
+    "id": "b4_172"
+  },
+  {
+    "band": 4,
+    "target": "proportion",
+    "sentence": "A large {proportion} of the class prefers quizzes.",
+    "options": [
+      "part of the whole",
+      "proposal in formal writing",
+      "procedure in careful steps",
+      "process of long work"
+    ],
+    "correct": 0,
+    "id": "b4_173"
+  },
+  {
+    "band": 4,
+    "target": "restriction",
+    "sentence": "There is a {restriction} on books you may borrow.",
+    "options": [
+      "limit on book borrowing",
+      "reaction of strong feeling",
+      "relation in close family",
+      "reputation in wide public"
+    ],
+    "correct": 0,
+    "id": "b4_174"
+  },
+  {
+    "band": 4,
+    "target": "adequate",
+    "sentence": "Is your preparation {adequate} for tomorrow?",
+    "options": [
+      "enough",
+      "accurate",
+      "active",
+      "annual"
+    ],
+    "correct": 0,
+    "id": "b4_175"
+  },
+  {
+    "band": 4,
+    "target": "consistent",
+    "sentence": "Her results have been {consistent} all year.",
+    "options": [
+      "steady in pattern",
+      "constant in time",
+      "conscious in mind",
+      "convenient in use"
+    ],
+    "correct": 0,
+    "id": "b4_176"
+  },
+  {
+    "band": 4,
+    "target": "crucial",
+    "sentence": "Timing is {crucial} when baking this cake.",
+    "options": [
+      "extremely important",
+      "slightly curious",
+      "happening currently",
+      "visibly creative"
+    ],
+    "correct": 0,
+    "id": "b4_177"
+  },
+  {
+    "band": 4,
+    "target": "distinct",
+    "sentence": "There are three {distinct} stages in the process.",
+    "options": [
+      "fully separate",
+      "far distant",
+      "widely diverse",
+      "overly direct"
+    ],
+    "correct": 0,
+    "id": "b4_178"
+  },
+  {
+    "band": 4,
+    "target": "fundamental",
+    "sentence": "Respect is a {fundamental} school value.",
+    "options": [
+      "basic and so essential",
+      "frequent in the happening",
+      "formal in the style",
+      "flexible in the plan"
+    ],
+    "correct": 0,
+    "id": "b4_179"
+  },
+  {
+    "band": 4,
+    "target": "precise",
+    "sentence": "Please give a {precise} measurement.",
+    "options": [
+      "exact",
+      "previous",
+      "primary",
+      "private"
+    ],
+    "correct": 0,
+    "id": "b4_180"
+  },
+  {
+    "band": 4,
+    "target": "substantial",
+    "sentence": "They made a {substantial} charity donation.",
+    "options": [
+      "large in amount",
+      "later in order",
+      "bare in supply",
+      "perfect in fit"
+    ],
+    "correct": 0,
+    "id": "b4_181"
+  },
+  {
+    "band": 4,
+    "target": "ultimately",
+    "sentence": "{Ultimately}, the decision rests with the principal.",
+    "options": [
+      "in the end",
+      "as a rule",
+      "sad to say",
+      "out of blue"
+    ],
+    "correct": 0,
+    "id": "b4_182"
+  },
+  {
+    "band": 4,
+    "target": "adapt",
+    "sentence": "New students must {adapt} to the school timetable.",
+    "options": [
+      "adjust",
+      "adopt",
+      "admire",
+      "admit"
+    ],
+    "correct": 0,
+    "id": "b4_183"
+  },
+  {
+    "band": 4,
+    "target": "adopt",
+    "sentence": "The school will {adopt} a new reading scheme.",
+    "options": [
+      "take on",
+      "adapt to",
+      "admire for",
+      "admit to"
+    ],
+    "correct": 0,
+    "id": "b4_184"
+  },
+  {
+    "band": 4,
+    "target": "attach",
+    "sentence": "Please {attach} your file to the email.",
+    "options": [
+      "join on",
+      "attack hard",
+      "attend class",
+      "attract crowds"
+    ],
+    "correct": 0,
+    "id": "b4_185"
+  },
+  {
+    "band": 4,
+    "target": "attend",
+    "sentence": "All Form 3 students must {attend} the talk.",
+    "options": [
+      "be present at",
+      "attach firmly to",
+      "attract crowds to",
+      "attempt hard at"
+    ],
+    "correct": 0,
+    "id": "b4_186"
+  },
+  {
+    "band": 4,
+    "target": "attempt",
+    "sentence": "She will {attempt} the hard question first.",
+    "options": [
+      "try",
+      "attend",
+      "attract",
+      "attach"
+    ],
+    "correct": 0,
+    "id": "b4_187"
+  },
+  {
+    "band": 4,
+    "target": "exclude",
+    "sentence": "Do not {exclude} quieter members from the group.",
+    "options": [
+      "leave out",
+      "excuse away",
+      "explain away",
+      "expand out"
+    ],
+    "correct": 0,
+    "id": "b4_188"
+  },
+  {
+    "band": 4,
+    "target": "emphasise",
+    "sentence": "Teachers {emphasise} honesty in all contests.",
+    "options": [
+      "stress",
+      "enable",
+      "endure",
+      "emerge"
+    ],
+    "correct": 0,
+    "id": "b4_189"
+  },
+  {
+    "band": 4,
+    "target": "enable",
+    "sentence": "Clear notes {enable} faster revision.",
+    "options": [
+      "make able",
+      "endure pain",
+      "emphasise point",
+      "exclude people"
+    ],
+    "correct": 0,
+    "id": "b4_190"
+  },
+  {
+    "band": 4,
+    "target": "endure",
+    "sentence": "Runners must {endure} long training sessions.",
+    "options": [
+      "put up with",
+      "make able for",
+      "emphasise strongly about",
+      "exclude quietly from"
+    ],
+    "correct": 0,
+    "id": "b4_191"
+  },
+  {
+    "band": 4,
+    "target": "ensure",
+    "sentence": "Please {ensure} all windows are closed.",
+    "options": [
+      "make sure",
+      "make able",
+      "put up",
+      "leave out"
+    ],
+    "correct": 0,
+    "id": "b4_192"
+  },
+  {
+    "band": 4,
+    "target": "estimate",
+    "sentence": "{Estimate} the number of visitors this weekend.",
+    "options": [
+      "roughly judge",
+      "firmly establish",
+      "closely examine",
+      "freely exchange"
+    ],
+    "correct": 0,
+    "id": "b4_193"
+  },
+  {
+    "band": 4,
+    "target": "examine",
+    "sentence": "Doctors will {examine} the injury carefully.",
+    "options": [
+      "look over so carefully",
+      "estimate only so roughly",
+      "exchange only so freely",
+      "exclude only so firmly"
+    ],
+    "correct": 0,
+    "id": "b4_194"
+  },
+  {
+    "band": 4,
+    "target": "exchange",
+    "sentence": "Students {exchange} ideas in group talk.",
+    "options": [
+      "swap",
+      "examine",
+      "estimate",
+      "exclude"
+    ],
+    "correct": 0,
+    "id": "b4_195"
+  },
+  {
+    "band": 4,
+    "target": "impress",
+    "sentence": "Her clear speech will {impress} the judges.",
+    "options": [
+      "make strong effect",
+      "imply without words",
+      "impose without care",
+      "improve without effort"
+    ],
+    "correct": 0,
+    "id": "b4_196"
+  },
+  {
+    "band": 4,
+    "target": "imply",
+    "sentence": "His silence seemed to {imply} disagreement.",
+    "options": [
+      "suggest without saying",
+      "impress without trying",
+      "impose without asking",
+      "improve without practice"
+    ],
+    "correct": 0,
+    "id": "b4_197"
+  },
+  {
+    "band": 4,
+    "target": "impose",
+    "sentence": "The school will not {impose} a dress code.",
+    "options": [
+      "force onto people",
+      "imply without words",
+      "import without tax",
+      "impress without trying"
+    ],
+    "correct": 0,
+    "id": "b4_198"
+  },
+  {
+    "band": 4,
+    "target": "occupy",
+    "sentence": "Books {occupy} most of the shelf space.",
+    "options": [
+      "take up space",
+      "occur by chance",
+      "offer by kindness",
+      "obtain by effort"
+    ],
+    "correct": 0,
+    "id": "b4_199"
+  },
+  {
+    "band": 4,
+    "target": "occur",
+    "sentence": "Power cuts may {occur} during the storm.",
+    "options": [
+      "happen",
+      "occupy",
+      "offer",
+      "obtain"
+    ],
+    "correct": 0,
+    "id": "b4_200"
+  },
+  {
+    "band": 5,
+    "target": "acknowledge",
+    "sentence": "She refused to {acknowledge} her mistake.",
+    "options": [
+      "admit as true",
+      "accomplish a goal",
+      "accumulate more wealth",
+      "adapt to change"
+    ],
+    "correct": 0,
+    "id": "b5_201"
+  },
+  {
+    "band": 5,
+    "target": "advocate",
+    "sentence": "Doctors {advocate} a balanced diet.",
+    "options": [
+      "speak in favour",
+      "give up completely",
+      "take in quickly",
+      "blame without proof"
+    ],
+    "correct": 0,
+    "id": "b5_202"
+  },
+  {
+    "band": 5,
+    "target": "allocate",
+    "sentence": "The school will {allocate} more time to reading.",
+    "options": [
+      "give out for use",
+      "change only a little",
+      "amaze all who watch",
+      "announce to the public"
+    ],
+    "correct": 0,
+    "id": "b5_203"
+  },
+  {
+    "band": 5,
+    "target": "attribute",
+    "sentence": "They {attribute} higher scores to better teaching.",
+    "options": [
+      "see as caused by",
+      "draw in more buyers",
+      "keep from more harm",
+      "give out more prizes"
+    ],
+    "correct": 0,
+    "id": "b5_204"
+  },
+  {
+    "band": 5,
+    "target": "compensate",
+    "sentence": "Extra practice can {compensate} for missed lessons.",
+    "options": [
+      "make up for",
+      "compete hard for",
+      "complain soft about",
+      "compose music for"
+    ],
+    "correct": 0,
+    "id": "b5_205"
+  },
+  {
+    "band": 5,
+    "target": "confine",
+    "sentence": "{Confine} your comments to the debate topic.",
+    "options": [
+      "keep within limits",
+      "confirm without doubt",
+      "confront without fear",
+      "consent without force"
+    ],
+    "correct": 0,
+    "id": "b5_206"
+  },
+  {
+    "band": 5,
+    "target": "contradict",
+    "sentence": "His second statement seemed to {contradict} the first.",
+    "options": [
+      "say the opposite of",
+      "contribute a share of",
+      "control the behaviour of",
+      "convert the energy of"
+    ],
+    "correct": 0,
+    "id": "b5_207"
+  },
+  {
+    "band": 5,
+    "target": "diminish",
+    "sentence": "His interest began to {diminish} after a year.",
+    "options": [
+      "become smaller",
+      "display proudly",
+      "distribute evenly",
+      "dominate completely"
+    ],
+    "correct": 0,
+    "id": "b5_208"
+  },
+  {
+    "band": 5,
+    "target": "eliminate",
+    "sentence": "The filter can {eliminate} most dust.",
+    "options": [
+      "remove completely",
+      "elaborate in",
+      "elevate to",
+      "embrace with"
+    ],
+    "correct": 0,
+    "id": "b5_209"
+  },
+  {
+    "band": 5,
+    "target": "facilitate",
+    "sentence": "Clear instructions {facilitate} learning.",
+    "options": [
+      "make easier",
+      "fabricate falsely",
+      "fascinate deeply",
+      "formulate carefully"
+    ],
+    "correct": 0,
+    "id": "b5_210"
+  },
+  {
+    "band": 5,
+    "target": "fluctuate",
+    "sentence": "Temperatures {fluctuate} a lot in spring.",
+    "options": [
+      "rise and fall",
+      "flourish and grow",
+      "formulate and plan",
+      "frustrate and stop"
+    ],
+    "correct": 0,
+    "id": "b5_211"
+  },
+  {
+    "band": 5,
+    "target": "incorporate",
+    "sentence": "Designers will {incorporate} local culture.",
+    "options": [
+      "include as part",
+      "indicate as sign",
+      "influence as force",
+      "inspect as check"
+    ],
+    "correct": 0,
+    "id": "b5_212"
+  },
+  {
+    "band": 5,
+    "target": "manipulate",
+    "sentence": "Some ads try to {manipulate} emotions.",
+    "options": [
+      "control cleverly",
+      "manufacture quickly",
+      "maintain carefully",
+      "measure precisely"
+    ],
+    "correct": 0,
+    "id": "b5_213"
+  },
+  {
+    "band": 5,
+    "target": "perceive",
+    "sentence": "People {perceive} the same event differently.",
+    "options": [
+      "notice through senses",
+      "persuade through words",
+      "perform through practice",
+      "permit through rules"
+    ],
+    "correct": 0,
+    "id": "b5_214"
+  },
+  {
+    "band": 5,
+    "target": "prevail",
+    "sentence": "Honesty should {prevail} in competitions.",
+    "options": [
+      "win out",
+      "guess early",
+      "choose openly",
+      "keep carefully"
+    ],
+    "correct": 0,
+    "id": "b5_215"
+  },
+  {
+    "band": 5,
+    "target": "reinforce",
+    "sentence": "Extra examples {reinforce} understanding.",
+    "options": [
+      "make stronger",
+      "reject outright",
+      "release quickly",
+      "rely heavily"
+    ],
+    "correct": 0,
+    "id": "b5_216"
+  },
+  {
+    "band": 5,
+    "target": "ambiguity",
+    "sentence": "The sentence has an {ambiguity} that confuses readers.",
+    "options": [
+      "unclear double meaning",
+      "strong personal ambition",
+      "deep personal anxiety",
+      "formal public apology"
+    ],
+    "correct": 0,
+    "id": "b5_217"
+  },
+  {
+    "band": 5,
+    "target": "competence",
+    "sentence": "Language {competence} grows with practice.",
+    "options": [
+      "ability to perform well",
+      "contest in school sports",
+      "complaint in formal words",
+      "confidence in inner self"
+    ],
+    "correct": 0,
+    "id": "b5_218"
+  },
+  {
+    "band": 5,
+    "target": "consensus",
+    "sentence": "The class reached a {consensus} on the topic.",
+    "options": [
+      "general agreement",
+      "formal consent",
+      "abstract concept",
+      "shared concern"
+    ],
+    "correct": 0,
+    "id": "b5_219"
+  },
+  {
+    "band": 5,
+    "target": "controversy",
+    "sentence": "The new rule caused {controversy} among parents.",
+    "options": [
+      "public disagreement",
+      "social convention",
+      "friendly conversation",
+      "helpful contribution"
+    ],
+    "correct": 0,
+    "id": "b5_220"
+  },
+  {
+    "band": 5,
+    "target": "deficiency",
+    "sentence": "A vitamin {deficiency} can lower energy.",
+    "options": [
+      "lack or shortage",
+      "clear new definition",
+      "university degree course",
+      "strong new demand"
+    ],
+    "correct": 0,
+    "id": "b5_221"
+  },
+  {
+    "band": 5,
+    "target": "integrity",
+    "sentence": "A leader with {integrity} earns trust.",
+    "options": [
+      "honesty and principles",
+      "high strong intensity",
+      "clear firm intention",
+      "shared common interest"
+    ],
+    "correct": 0,
+    "id": "b5_222"
+  },
+  {
+    "band": 5,
+    "target": "phenomenon",
+    "sentence": "Auroras are a natural {phenomenon}.",
+    "options": [
+      "observable event",
+      "school philosophy",
+      "digital photograph",
+      "medical physician"
+    ],
+    "correct": 0,
+    "id": "b5_223"
+  },
+  {
+    "band": 5,
+    "target": "prejudice",
+    "sentence": "Education can reduce {prejudice} against minorities.",
+    "options": [
+      "unfair advance opinion",
+      "personal clear preference",
+      "physical clear presence",
+      "social strong pressure"
+    ],
+    "correct": 0,
+    "id": "b5_224"
+  },
+  {
+    "band": 5,
+    "target": "priority",
+    "sentence": "Safety is our top {priority} on this trip.",
+    "options": [
+      "most important thing",
+      "special rare privilege",
+      "official set procedure",
+      "paid skilled profession"
+    ],
+    "correct": 0,
+    "id": "b5_225"
+  },
+  {
+    "band": 5,
+    "target": "subsequent",
+    "sentence": "In {subsequent} years the school expanded.",
+    "options": [
+      "coming later",
+      "large amount",
+      "already successful",
+      "barely sufficient"
+    ],
+    "correct": 0,
+    "id": "b5_226"
+  },
+  {
+    "band": 5,
+    "target": "vulnerable",
+    "sentence": "Young children are {vulnerable} to online scams.",
+    "options": [
+      "easily harmed",
+      "deeply valued",
+      "openly visible",
+      "widely various"
+    ],
+    "correct": 0,
+    "id": "b5_227"
+  },
+  {
+    "band": 5,
+    "target": "widespread",
+    "sentence": "There is {widespread} support for recycling.",
+    "options": [
+      "existing over large area",
+      "worthwhile over long term",
+      "wonderful over short time",
+      "worldwide over all lands"
+    ],
+    "correct": 0,
+    "id": "b5_228"
+  },
+  {
+    "band": 5,
+    "target": "inevitable",
+    "sentence": "With heavy rain, delays were {inevitable}.",
+    "options": [
+      "certain to happen",
+      "hard to believe",
+      "free and independent",
+      "lone and individual"
+    ],
+    "correct": 0,
+    "id": "b5_229"
+  },
+  {
+    "band": 5,
+    "target": "preliminary",
+    "sentence": "These are only {preliminary} results.",
+    "options": [
+      "coming before the main",
+      "lasting as if permanent",
+      "personal as if private",
+      "practical as if useful"
+    ],
+    "correct": 0,
+    "id": "b5_230"
+  },
+  {
+    "band": 5,
+    "target": "predominantly",
+    "sentence": "The audience was {predominantly} students.",
+    "options": [
+      "for the most part",
+      "at an earlier time",
+      "as the primary aim",
+      "as a probable end"
+    ],
+    "correct": 0,
+    "id": "b5_231"
+  },
+  {
+    "band": 5,
+    "target": "respectively",
+    "sentence": "Tom and May scored 80 and 90 {respectively}.",
+    "options": [
+      "in the order mentioned",
+      "again and again today",
+      "to a relative degree",
+      "in a reasonable way"
+    ],
+    "correct": 0,
+    "id": "b5_232"
+  },
+  {
+    "band": 5,
+    "target": "accumulate",
+    "sentence": "Dust can {accumulate} on unused shelves.",
+    "options": [
+      "pile up",
+      "agree on",
+      "accuse of",
+      "adapt to"
+    ],
+    "correct": 0,
+    "id": "b5_233"
+  },
+  {
+    "band": 5,
+    "target": "abandon",
+    "sentence": "Do not {abandon} your teammates mid-project.",
+    "options": [
+      "give up on",
+      "take in to",
+      "blame him for",
+      "change to fit"
+    ],
+    "correct": 0,
+    "id": "b5_234"
+  },
+  {
+    "band": 5,
+    "target": "absorb",
+    "sentence": "Plants {absorb} water through their roots.",
+    "options": [
+      "take in",
+      "give up",
+      "blame for",
+      "adapt to"
+    ],
+    "correct": 0,
+    "id": "b5_235"
+  },
+  {
+    "band": 5,
+    "target": "accuse",
+    "sentence": "Do not {accuse} someone without clear proof.",
+    "options": [
+      "blame",
+      "absorb",
+      "abandon",
+      "adapt"
+    ],
+    "correct": 0,
+    "id": "b5_236"
+  },
+  {
+    "band": 5,
+    "target": "alter",
+    "sentence": "We may {alter} the plan if it rains.",
+    "options": [
+      "change",
+      "amaze",
+      "announce",
+      "allocate"
+    ],
+    "correct": 0,
+    "id": "b5_237"
+  },
+  {
+    "band": 5,
+    "target": "assemble",
+    "sentence": "Students will {assemble} in the hall at nine.",
+    "options": [
+      "gather",
+      "assess",
+      "assign",
+      "assist"
+    ],
+    "correct": 0,
+    "id": "b5_238"
+  },
+  {
+    "band": 5,
+    "target": "assign",
+    "sentence": "Teachers {assign} homework every Monday.",
+    "options": [
+      "give as a task",
+      "gather as a group",
+      "assist as a helper",
+      "assess as a judge"
+    ],
+    "correct": 0,
+    "id": "b5_239"
+  },
+  {
+    "band": 5,
+    "target": "assist",
+    "sentence": "Prefects {assist} younger students at lunch.",
+    "options": [
+      "help",
+      "assign",
+      "assemble",
+      "assess"
+    ],
+    "correct": 0,
+    "id": "b5_240"
+  },
+  {
+    "band": 5,
+    "target": "cease",
+    "sentence": "Please {cease} talking during the announcement.",
+    "options": [
+      "stop",
+      "chase",
+      "choose",
+      "check"
+    ],
+    "correct": 0,
+    "id": "b5_241"
+  },
+  {
+    "band": 5,
+    "target": "cite",
+    "sentence": "You must {cite} your sources in the essay.",
+    "options": [
+      "quote",
+      "cease",
+      "claim",
+      "clarify"
+    ],
+    "correct": 0,
+    "id": "b5_242"
+  },
+  {
+    "band": 5,
+    "target": "coincide",
+    "sentence": "The two events {coincide} on the same day.",
+    "options": [
+      "happen together",
+      "cite carefully",
+      "claim strongly",
+      "combine fully"
+    ],
+    "correct": 0,
+    "id": "b5_243"
+  },
+  {
+    "band": 5,
+    "target": "combine",
+    "sentence": "{Combine} the eggs and flour in a bowl.",
+    "options": [
+      "mix together",
+      "coincide perfectly",
+      "cite carefully",
+      "claim strongly"
+    ],
+    "correct": 0,
+    "id": "b5_244"
+  },
+  {
+    "band": 5,
+    "target": "compatible",
+    "sentence": "Is this charger {compatible} with your phone?",
+    "options": [
+      "able to work together",
+      "able to finish quickly",
+      "able to seem complex",
+      "able to look common"
+    ],
+    "correct": 0,
+    "id": "b5_245"
+  },
+  {
+    "band": 5,
+    "target": "comprehensive",
+    "sentence": "The guide gives a {comprehensive} city overview.",
+    "options": [
+      "covering every main point",
+      "matching every main type",
+      "seeming a bit complex",
+      "looking a bit common"
+    ],
+    "correct": 0,
+    "id": "b5_246"
+  },
+  {
+    "band": 5,
+    "target": "concurrent",
+    "sentence": "Two {concurrent} workshops run at 3 pm.",
+    "options": [
+      "happening at one time",
+      "happening as hard fact",
+      "happening with real confidence",
+      "happening for mere convenience"
+    ],
+    "correct": 0,
+    "id": "b5_247"
+  },
+  {
+    "band": 5,
+    "target": "conditional",
+    "sentence": "Entry is {conditional} on a valid ticket.",
+    "options": [
+      "depending on something",
+      "happening at same",
+      "happening with confidence",
+      "happening as concrete"
+    ],
+    "correct": 0,
+    "id": "b5_248"
+  },
+  {
+    "band": 5,
+    "target": "conform",
+    "sentence": "Club members must {conform} to safety rules.",
+    "options": [
+      "follow the rules",
+      "confirm the facts",
+      "confront the enemy",
+      "consent with pleasure"
+    ],
+    "correct": 0,
+    "id": "b5_249"
+  },
+  {
+    "band": 5,
+    "target": "confront",
+    "sentence": "Leaders must {confront} bullying openly.",
+    "options": [
+      "face up to",
+      "conform well to",
+      "confirm well for",
+      "consent well with"
+    ],
+    "correct": 0,
+    "id": "b5_250"
+  },
+  {
+    "band": 6,
+    "target": "allege",
+    "sentence": "The report did not {allege} that anyone broke the law.",
+    "options": [
+      "claim without full proof",
+      "allocate without full care",
+      "alter without full notice",
+      "amuse without full effort"
+    ],
+    "correct": 0,
+    "id": "b6_251"
+  },
+  {
+    "band": 6,
+    "target": "aspire",
+    "sentence": "Many students {aspire} to study medicine.",
+    "options": [
+      "strongly desire to achieve",
+      "firmly assert to others",
+      "carefully assess to others",
+      "quickly assign to others"
+    ],
+    "correct": 0,
+    "id": "b6_252"
+  },
+  {
+    "band": 6,
+    "target": "compel",
+    "sentence": "The evidence may {compel} a change of view.",
+    "options": [
+      "force",
+      "compile",
+      "comply",
+      "compose"
+    ],
+    "correct": 0,
+    "id": "b6_253"
+  },
+  {
+    "band": 6,
+    "target": "conceive",
+    "sentence": "It is hard to {conceive} of life without the internet.",
+    "options": [
+      "form an idea of",
+      "concede a point of",
+      "conceal a secret of",
+      "condemn a person of"
+    ],
+    "correct": 0,
+    "id": "b6_254"
+  },
+  {
+    "band": 6,
+    "target": "constrain",
+    "sentence": "Limited funding will {constrain} club spending.",
+    "options": [
+      "limit or restrict",
+      "construct or build",
+      "consult or ask",
+      "consume or use"
+    ],
+    "correct": 0,
+    "id": "b6_255"
+  },
+  {
+    "band": 6,
+    "target": "contemplate",
+    "sentence": "She sat quietly to {contemplate} her future plans.",
+    "options": [
+      "think carefully about",
+      "contribute freely about",
+      "continue steadily about",
+      "contract quickly about"
+    ],
+    "correct": 0,
+    "id": "b6_256"
+  },
+  {
+    "band": 6,
+    "target": "denounce",
+    "sentence": "Leaders {denounce} unfair treatment of workers.",
+    "options": [
+      "publicly criticise",
+      "quietly deny",
+      "openly depend",
+      "openly deserve"
+    ],
+    "correct": 0,
+    "id": "b6_257"
+  },
+  {
+    "band": 6,
+    "target": "displace",
+    "sentence": "Floods may {displace} families from their homes.",
+    "options": [
+      "force to leave",
+      "display to show",
+      "dispose to remove",
+      "dispute to argue"
+    ],
+    "correct": 0,
+    "id": "b6_258"
+  },
+  {
+    "band": 6,
+    "target": "endorse",
+    "sentence": "Several teachers {endorse} the new reading plan.",
+    "options": [
+      "publicly approve",
+      "quietly endure",
+      "strictly enforce",
+      "actively engage"
+    ],
+    "correct": 0,
+    "id": "b6_259"
+  },
+  {
+    "band": 6,
+    "target": "evoke",
+    "sentence": "The old song can {evoke} childhood memories.",
+    "options": [
+      "bring to mind",
+      "evolve over time",
+      "exclude from group",
+      "expand over area"
+    ],
+    "correct": 0,
+    "id": "b6_260"
+  },
+  {
+    "band": 6,
+    "target": "exemplify",
+    "sentence": "Her essay will {exemplify} clear academic writing.",
+    "options": [
+      "be a typical example",
+      "be a daily exercise",
+      "be a public exhibit",
+      "be a short explain"
+    ],
+    "correct": 0,
+    "id": "b6_261"
+  },
+  {
+    "band": 6,
+    "target": "impose",
+    "sentence": "The school will not {impose} a dress code.",
+    "options": [
+      "force onto people",
+      "imply without words",
+      "import without tax",
+      "impress without trying"
+    ],
+    "correct": 0,
+    "id": "b6_262"
+  },
+  {
+    "band": 6,
+    "target": "induce",
+    "sentence": "Loud music can {induce} stress in some people.",
+    "options": [
+      "bring about",
+      "include within",
+      "indicate openly",
+      "infect quickly"
+    ],
+    "correct": 0,
+    "id": "b6_263"
+  },
+  {
+    "band": 6,
+    "target": "intervene",
+    "sentence": "Teachers may {intervene} if a quarrel turns serious.",
+    "options": [
+      "step in and help",
+      "sit down and ask",
+      "bring in new people",
+      "make up new things"
+    ],
+    "correct": 0,
+    "id": "b6_264"
+  },
+  {
+    "band": 6,
+    "target": "invoke",
+    "sentence": "The lawyer tried to {invoke} an old court decision.",
+    "options": [
+      "call upon for support",
+      "involve others for support",
+      "invite guests for support",
+      "invest money for support"
+    ],
+    "correct": 0,
+    "id": "b6_265"
+  },
+  {
+    "band": 6,
+    "target": "undermine",
+    "sentence": "Constant criticism can {undermine} confidence.",
+    "options": [
+      "weaken bit by bit",
+      "mark under the line",
+      "go through an operation",
+      "take on a task"
+    ],
+    "correct": 0,
+    "id": "b6_266"
+  },
+  {
+    "band": 6,
+    "target": "autonomy",
+    "sentence": "Universities value academic {autonomy}.",
+    "options": [
+      "freedom to self-govern",
+      "power of official",
+      "state of product",
+      "level of public"
+    ],
+    "correct": 0,
+    "id": "b6_267"
+  },
+  {
+    "band": 6,
+    "target": "coherence",
+    "sentence": "Good essays need logical {coherence}.",
+    "options": [
+      "clear logical connection",
+      "surprising odd coincidence",
+      "strong firm commitment",
+      "job related competence"
+    ],
+    "correct": 0,
+    "id": "b6_268"
+  },
+  {
+    "band": 6,
+    "target": "compliance",
+    "sentence": "Factories must ensure {compliance} with safety rules.",
+    "options": [
+      "obedience to rules",
+      "formal public complaint",
+      "high technical complexity",
+      "strong self confidence"
+    ],
+    "correct": 0,
+    "id": "b6_269"
+  },
+  {
+    "band": 6,
+    "target": "discrepancy",
+    "sentence": "There is a {discrepancy} between the two data sets.",
+    "options": [
+      "difference or inconsistency",
+      "discipline or training",
+      "discount or reduction",
+      "discovery or finding"
+    ],
+    "correct": 0,
+    "id": "b6_270"
+  },
+  {
+    "band": 6,
+    "target": "infrastructure",
+    "sentence": "The city invested in transport {infrastructure}.",
+    "options": [
+      "basic systems and facilities",
+      "classroom teaching and instruction",
+      "musical tools and instruments",
+      "travel cover and insurance"
+    ],
+    "correct": 0,
+    "id": "b6_271"
+  },
+  {
+    "band": 6,
+    "target": "legitimacy",
+    "sentence": "Voters questioned the election's {legitimacy}.",
+    "options": [
+      "lawful rightfulness",
+      "legal liability",
+      "statistical likelihood",
+      "reading literacy"
+    ],
+    "correct": 0,
+    "id": "b6_272"
+  },
+  {
+    "band": 6,
+    "target": "magnitude",
+    "sentence": "Few grasped the {magnitude} of the problem.",
+    "options": [
+      "great size or importance",
+      "voting majority or number",
+      "company management or leadership",
+      "factory manufacture or production"
+    ],
+    "correct": 0,
+    "id": "b6_273"
+  },
+  {
+    "band": 6,
+    "target": "paradigm",
+    "sentence": "Online learning is a new {paradigm} in education.",
+    "options": [
+      "typical model or pattern",
+      "essay paragraph or section",
+      "technical parameter or value",
+      "event participant or member"
+    ],
+    "correct": 0,
+    "id": "b6_274"
+  },
+  {
+    "band": 6,
+    "target": "prevalence",
+    "sentence": "The {prevalence} of smartphone use is high.",
+    "options": [
+      "how common something is",
+      "what preference someone has",
+      "what presence someone shows",
+      "what pressure someone feels"
+    ],
+    "correct": 0,
+    "id": "b6_275"
+  },
+  {
+    "band": 6,
+    "target": "resilience",
+    "sentence": "Showing {resilience} helps students recover from failure.",
+    "options": [
+      "ability to recover",
+      "active resistance shown",
+      "formal resolution passed",
+      "personal responsibility held"
+    ],
+    "correct": 0,
+    "id": "b6_276"
+  },
+  {
+    "band": 6,
+    "target": "scrutiny",
+    "sentence": "Public spending faces close {scrutiny}.",
+    "options": [
+      "careful examination",
+      "daily schedule",
+      "airport security",
+      "number sequence"
+    ],
+    "correct": 0,
+    "id": "b6_277"
+  },
+  {
+    "band": 6,
+    "target": "arbitrary",
+    "sentence": "The seating rule seemed {arbitrary} and unfair.",
+    "options": [
+      "based on random choice",
+      "based on clear appearance",
+      "based on full appropriateness",
+      "based on made artificiality"
+    ],
+    "correct": 0,
+    "id": "b6_278"
+  },
+  {
+    "band": 6,
+    "target": "inherent",
+    "sentence": "Risk is {inherent} in extreme sports.",
+    "options": [
+      "existing as natural part",
+      "happening at first stage",
+      "located on inner side",
+      "feeling of intense force"
+    ],
+    "correct": 0,
+    "id": "b6_279"
+  },
+  {
+    "band": 6,
+    "target": "plausible",
+    "sentence": "Her explanation sounded {plausible} at first.",
+    "options": [
+      "seeming reasonable",
+      "seeming pleasant",
+      "seeming practical",
+      "seeming precious"
+    ],
+    "correct": 0,
+    "id": "b6_280"
+  },
+  {
+    "band": 6,
+    "target": "rigorous",
+    "sentence": "The course has a {rigorous} assessment system.",
+    "options": [
+      "strict and thorough",
+      "silly and ridiculous",
+      "country and rural",
+      "normal and routine"
+    ],
+    "correct": 0,
+    "id": "b6_281"
+  },
+  {
+    "band": 6,
+    "target": "thereby",
+    "sentence": "He practised daily, {thereby} improving fluency.",
+    "options": [
+      "by that means",
+      "for that reason",
+      "even though true",
+      "all the way"
+    ],
+    "correct": 0,
+    "id": "b6_282"
+  },
+  {
+    "band": 6,
+    "target": "abolish",
+    "sentence": "Some cities want to {abolish} single-use plastics.",
+    "options": [
+      "end by law",
+      "soak by cloth",
+      "blame by words",
+      "adapt by change"
+    ],
+    "correct": 0,
+    "id": "b6_283"
+  },
+  {
+    "band": 6,
+    "target": "abstain",
+    "sentence": "Two members chose to {abstain} from the vote.",
+    "options": [
+      "choose not to take part",
+      "choose to end by law",
+      "choose to soak by cloth",
+      "choose to blame by words"
+    ],
+    "correct": 0,
+    "id": "b6_284"
+  },
+  {
+    "band": 6,
+    "target": "accelerate",
+    "sentence": "Practice can {accelerate} language learning.",
+    "options": [
+      "speed up",
+      "accept in",
+      "accuse of",
+      "achieve for"
+    ],
+    "correct": 0,
+    "id": "b6_285"
+  },
+  {
+    "band": 6,
+    "target": "accommodate",
+    "sentence": "The hall can {accommodate} three hundred guests.",
+    "options": [
+      "have space for",
+      "speed up for",
+      "build up for",
+      "finish up for"
+    ],
+    "correct": 0,
+    "id": "b6_286"
+  },
+  {
+    "band": 6,
+    "target": "accord",
+    "sentence": "The clubs reached an {accord} on shared rooms.",
+    "options": [
+      "agreement",
+      "account",
+      "accent",
+      "access"
+    ],
+    "correct": 0,
+    "id": "b6_287"
+  },
+  {
+    "band": 6,
+    "target": "accumulate",
+    "sentence": "Interest can {accumulate} in a savings account.",
+    "options": [
+      "pile up",
+      "agree on",
+      "accuse of",
+      "adapt to"
+    ],
+    "correct": 0,
+    "id": "b6_288"
+  },
+  {
+    "band": 6,
+    "target": "adjacent",
+    "sentence": "The library is {adjacent} to the sports hall.",
+    "options": [
+      "next to",
+      "good enough",
+      "fully grown",
+      "far ahead"
+    ],
+    "correct": 0,
+    "id": "b6_289"
+  },
+  {
+    "band": 6,
+    "target": "adverse",
+    "sentence": "Heavy rain had an {adverse} effect on the match.",
+    "options": [
+      "harmful",
+      "nearby",
+      "enough",
+      "grown"
+    ],
+    "correct": 0,
+    "id": "b6_290"
+  },
+  {
+    "band": 6,
+    "target": "advocate",
+    "sentence": "She will {advocate} for greener school policies.",
+    "options": [
+      "speak in favour",
+      "give up completely",
+      "take in quickly",
+      "blame without proof"
+    ],
+    "correct": 0,
+    "id": "b6_291"
+  },
+  {
+    "band": 6,
+    "target": "aesthetic",
+    "sentence": "The design won an award for {aesthetic} quality.",
+    "options": [
+      "related to beauty",
+      "related to athletics",
+      "related to academics",
+      "related to authenticity"
+    ],
+    "correct": 0,
+    "id": "b6_292"
+  },
+  {
+    "band": 6,
+    "target": "affiliate",
+    "sentence": "The club will {affiliate} with a city sports group.",
+    "options": [
+      "link formally with",
+      "state firmly with",
+      "change results with",
+      "pay costs with"
+    ],
+    "correct": 0,
+    "id": "b6_293"
+  },
+  {
+    "band": 6,
+    "target": "affirm",
+    "sentence": "Witnesses {affirm} that the story is true.",
+    "options": [
+      "state firmly",
+      "link formally",
+      "change results",
+      "pay costs"
+    ],
+    "correct": 0,
+    "id": "b6_294"
+  },
+  {
+    "band": 6,
+    "target": "aggregate",
+    "sentence": "The {aggregate} score decides the winner.",
+    "options": [
+      "combined total",
+      "friendly agree",
+      "secret agent",
+      "meeting agenda"
+    ],
+    "correct": 0,
+    "id": "b6_295"
+  },
+  {
+    "band": 6,
+    "target": "ambiguous",
+    "sentence": "The notice was {ambiguous} and confused parents.",
+    "options": [
+      "unclear in meaning",
+      "ambitious in goals",
+      "annual in timing",
+      "ancient in age"
+    ],
+    "correct": 0,
+    "id": "b6_296"
+  },
+  {
+    "band": 6,
+    "target": "amend",
+    "sentence": "The committee will {amend} the draft rules.",
+    "options": [
+      "change slightly",
+      "amuse greatly",
+      "amaze suddenly",
+      "announce publicly"
+    ],
+    "correct": 0,
+    "id": "b6_297"
+  },
+  {
+    "band": 6,
+    "target": "analogy",
+    "sentence": "The teacher used an {analogy} to explain gravity.",
+    "options": [
+      "comparison for explaining",
+      "analysis for studying",
+      "apology for offending",
+      "anatomy for learning"
+    ],
+    "correct": 0,
+    "id": "b6_298"
+  },
+  {
+    "band": 6,
+    "target": "anomaly",
+    "sentence": "One odd result was an {anomaly} in the data.",
+    "options": [
+      "odd exception",
+      "close comparison",
+      "formal apology",
+      "careful analysis"
+    ],
+    "correct": 0,
+    "id": "b6_299"
+  },
+  {
+    "band": 6,
+    "target": "apparatus",
+    "sentence": "Lab {apparatus} must be cleaned after use.",
+    "options": [
+      "equipment",
+      "apartment",
+      "appetite",
+      "appeal"
+    ],
+    "correct": 0,
+    "id": "b6_300"
+  }
+];
+const WARMUP_BANK = [
+  {
+    "band": 1,
+    "target": "apple",
+    "sentence": "Mum put a red {apple} in my lunch box.",
+    "options": [
+      "a fruit",
+      "an apron",
+      "an ankle",
+      "an arrow"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_001"
+  },
+  {
+    "band": 1,
+    "target": "dog",
+    "sentence": "We take our {dog} for a short walk every evening.",
+    "options": [
+      "a pet animal",
+      "a wooden door",
+      "a school desk",
+      "a dirty dish"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_002"
+  },
+  {
+    "band": 1,
+    "target": "bus",
+    "sentence": "I usually take the {bus} to school.",
+    "options": [
+      "a large vehicle",
+      "a school bag",
+      "a soft bed",
+      "a cardboard box"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_003"
+  },
+  {
+    "band": 1,
+    "target": "milk",
+    "sentence": "I drink cold {milk} with breakfast.",
+    "options": [
+      "a white drink",
+      "fresh red meat",
+      "the bright moon",
+      "a city map"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_004"
+  },
+  {
+    "band": 1,
+    "target": "rain",
+    "sentence": "Heavy {rain} cancelled outdoor PE.",
+    "options": [
+      "water from clouds",
+      "a busy roadway",
+      "a quiet bedroom",
+      "a shiny ring"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_005"
+  },
+  {
+    "band": 1,
+    "target": "pen",
+    "sentence": "I forgot to bring a {pen} to class.",
+    "options": [
+      "a writing tool",
+      "a cooking pan",
+      "a metal pin",
+      "a flower pot"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_006"
+  },
+  {
+    "band": 1,
+    "target": "cat",
+    "sentence": "The {cat} sleeps on the warm windowsill.",
+    "options": [
+      "a furry pet",
+      "a drinking cup",
+      "a family car",
+      "a cloth cap"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_007"
+  },
+  {
+    "band": 1,
+    "target": "shoe",
+    "sentence": "Tie each {shoe} tightly before you run.",
+    "options": [
+      "foot covering",
+      "local shop",
+      "sailing ship",
+      "television show"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_008"
+  },
+  {
+    "band": 1,
+    "target": "sun",
+    "sentence": "The bright {sun} woke everyone up.",
+    "options": [
+      "the daytime star",
+      "a schoolchild son",
+      "some cooking oil",
+      "a soft sofa"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_009"
+  },
+  {
+    "band": 1,
+    "target": "fish",
+    "sentence": "Dad bought a fresh {fish} for dinner.",
+    "options": [
+      "a water animal",
+      "a dinner plate",
+      "a flying animal",
+      "a farm field"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_010"
+  },
+  {
+    "band": 1,
+    "target": "bird",
+    "sentence": "A small {bird} sang outside the window.",
+    "options": [
+      "a flying animal",
+      "a wooden board",
+      "a birthday card",
+      "a travel ticket"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_011"
+  },
+  {
+    "band": 1,
+    "target": "hand",
+    "sentence": "Raise your {hand} if you know the answer.",
+    "options": [
+      "end of the arm",
+      "top of the hat",
+      "edge of the beach",
+      "bed in the hospital"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_012"
+  },
+  {
+    "band": 1,
+    "target": "egg",
+    "sentence": "She fried an {egg} for breakfast.",
+    "options": [
+      "food from a hen",
+      "edge of a knife",
+      "end of a road",
+      "ear on a head"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_013"
+  },
+  {
+    "band": 1,
+    "target": "bread",
+    "sentence": "We bought fresh {bread} from the bakery.",
+    "options": [
+      "baked food loaf",
+      "a river bridge",
+      "a hair brush",
+      "a tree branch"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_014"
+  },
+  {
+    "band": 1,
+    "target": "rice",
+    "sentence": "Many families eat {rice} with dinner.",
+    "options": [
+      "a cooked grain",
+      "a relay race",
+      "a main road",
+      "a hard rock"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_015"
+  },
+  {
+    "band": 1,
+    "target": "tea",
+    "sentence": "Grandma drinks hot {tea} every afternoon.",
+    "options": [
+      "a hot drink",
+      "a tall tree",
+      "a sports team",
+      "a clock time"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_016"
+  },
+  {
+    "band": 1,
+    "target": "ball",
+    "sentence": "The children kicked a {ball} in the park.",
+    "options": [
+      "a round toy",
+      "a loud bell",
+      "a soup bowl",
+      "a school bag"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_017"
+  },
+  {
+    "band": 1,
+    "target": "door",
+    "sentence": "Please close the {door} quietly.",
+    "options": [
+      "a room entrance",
+      "a school desk",
+      "a dirty dish",
+      "a family dog"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_018"
+  },
+  {
+    "band": 1,
+    "target": "window",
+    "sentence": "Open the {window} for some fresh air.",
+    "options": [
+      "a glass opening",
+      "a cold winter",
+      "a race winner",
+      "a book writer"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_019"
+  },
+  {
+    "band": 1,
+    "target": "table",
+    "sentence": "Put your books on the {table}.",
+    "options": [
+      "flat furniture",
+      "a computer",
+      "a train",
+      "a dark"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_020"
+  },
+  {
+    "band": 1,
+    "target": "chair",
+    "sentence": "Please sit on this {chair}.",
+    "options": [
+      "a seat",
+      "a child",
+      "a chain",
+      "a chart"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_021"
+  },
+  {
+    "band": 1,
+    "target": "bag",
+    "sentence": "Don't forget your school {bag}.",
+    "options": [
+      "a carry case",
+      "a soft bed",
+      "a cardboard box",
+      "a city bus"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_022"
+  },
+  {
+    "band": 1,
+    "target": "key",
+    "sentence": "I need the {key} to open the classroom.",
+    "options": [
+      "a lock opener",
+      "a small child",
+      "a tool kit",
+      "a chess king"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_023"
+  },
+  {
+    "band": 1,
+    "target": "phone",
+    "sentence": "Please put your {phone} in your bag during class.",
+    "options": [
+      "a mobile device",
+      "a printed photo",
+      "a grammar phrase",
+      "a flying plane"
+    ],
+    "correct": 0,
+    "warmup": true,
+    "id": "op_024"
+  }
+];
+
+(function () {
+  "use strict";
+
+  const BANDS = 6;
+  const BAND_SIZE = 500;
+  const TOTAL_WORDS = 3000;
+  const BLOCK_SIZE = 8;
+  const WARMUP_SIZE = 8; // opening Band-1 block
+  const START_BAND_DEFAULT = 2;
+  const SOFT_ITEMS = 90;
+  const MAX_ITEMS = 100;
+  const AIM_MIN_MS = 12 * 60 * 1000;
+  const AIM_MAX_MS = 15 * 60 * 1000;
+  const MAX_MS = 20 * 60 * 1000;
+  const ME_TARGET = 150;
+  const MIN_BLOCKS_FOR_ME_STOP = 3;
+  const Z95 = 1.96;
+  const DECAY_MILD = 0.85;
+
+  const state = {
+    name: "", phase: "warmup", band: START_BAND_DEFAULT, blockIndex: 0,
+    itemsAnswered: 0, warmupCorrect: 0, startedAt: null, timerId: null,
+    currentBlock: [], blockPos: 0, selected: null, bandStats: {},
+    usedIds: new Set(), speechOk: false, _blockCorrect: 0,
+    lastDelta: 0, finalProbeDone: false, pendingStopReason: null, debug: false,
+  };
+
+  const el = {
+    start: document.getElementById("screen-start"),
+    about: document.getElementById("screen-about"),
+    test: document.getElementById("screen-test"),
+    results: document.getElementById("screen-results"),
+    name: document.getElementById("studentName"),
+    btnStart: document.getElementById("btnStart"),
+    btnAboutStart: document.getElementById("btnAboutStart"),
+    btnAboutBack: document.getElementById("btnAboutBack"),
+    statusLeft: document.getElementById("statusLeft"),
+    statusRight: document.getElementById("statusRight"),
+    speechNote: document.getElementById("speechNote"),
+    hearSentence: document.getElementById("hearSentence"),
+    sentenceText: document.getElementById("sentenceText"),
+    optionsList: document.getElementById("optionsList"),
+    btnNext: document.getElementById("btnNext"),
+    resultSummary: document.getElementById("resultSummary"),
+    debugPanel: document.getElementById("debugPanel"),
+    debugResults: document.getElementById("debugResults"),
+    btnRestart: document.getElementById("btnRestart"),
+  };
+
+  function show(screen) {
+    [el.start, el.about, el.test, el.results].forEach(function (s) { s.classList.remove("active"); });
+    screen.classList.add("active");
+    window.scrollTo(0, 0);
+  }
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function clampBand(b) { return Math.max(1, Math.min(BANDS, b)); }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c];
+    });
+  }
+
+  /** Turn "text {word} more" into HTML with <u class="target">word</u> */
+  function sentenceToHtml(marked) {
+    return escapeHtml(marked).replace(/\{([^}]+)\}/g, '<u class="target">$1</u>');
+  }
+
+  /** Plain text for TTS (strip markers) */
+  function sentenceToSpeech(marked) {
+    return marked.replace(/\{([^}]+)\}/g, "$1");
+  }
+
+  function prepareItem(it) {
+    const order = shuffle([0, 1, 2, 3]);
+    return {
+      id: it.id, band: it.band, target: it.target, sentence: it.sentence,
+      options: order.map(function (i) { return it.options[i]; }),
+      correctIdx: order.indexOf(it.correct),
+    };
+  }
+
+  function drawWarmup() {
+    const picked = shuffle(WARMUP_BANK).slice(0, WARMUP_SIZE);
+    picked.forEach(function (it) { state.usedIds.add(it.id); });
+    return picked.map(prepareItem);
+  }
+
+  function itemsForBand(band) {
+    return ITEM_BANK.filter(function (it) {
+      return it.band === band && !state.usedIds.has(it.id);
+    });
+  }
+
+  function drawBlock(band) {
+    let pool = itemsForBand(band);
+    if (pool.length < BLOCK_SIZE) {
+      const all = ITEM_BANK.filter(function (it) { return it.band === band; });
+      pool = all.filter(function (it) { return !state.usedIds.has(it.id); });
+      if (pool.length < BLOCK_SIZE) {
+        all.forEach(function (it) { state.usedIds.delete(it.id); });
+        pool = all.slice();
+      }
+    }
+    const picked = shuffle(pool).slice(0, BLOCK_SIZE);
+    picked.forEach(function (it) { state.usedIds.add(it.id); });
+    return picked.map(prepareItem);
+  }
+
+  function ensureBandStats(band) {
+    if (!state.bandStats[band]) state.bandStats[band] = { correct: 0, answered: 0 };
+  }
+
+  function bandRate(band) {
+    const st = state.bandStats[band];
+    if (!st || st.answered <= 0) return null;
+    return st.correct / st.answered;
+  }
+
+  function timeRemainingMs() {
+    if (!state.startedAt) return MAX_MS;
+    return Math.max(0, MAX_MS - (Date.now() - state.startedAt));
+  }
+
+  function visitedBands() {
+    return Object.keys(state.bandStats).map(Number).filter(function (b) {
+      return state.bandStats[b].answered > 0;
+    }).sort(function (a, b) { return a - b; });
+  }
+
+  function highestVisitedBand() {
+    const v = visitedBands();
+    return v.length ? v[v.length - 1] : null;
+  }
+
+  function isStrongRate(r) {
+    return r !== null && r >= 0.75;
+  }
+
+  function isStillClimbing() {
+    if (state.lastDelta > 0) return true;
+    const h = highestVisitedBand();
+    if (h === null || h >= BANDS) return false;
+    return isStrongRate(bandRate(h));
+  }
+
+  /** ≥7/8 → +2; ≥75% but <7 → +1; 40–74% stay; <40% → −1 */
+  function bandDeltaFromBlock(blockCorrect, blockSize) {
+    const rate = blockCorrect / blockSize;
+    if (blockCorrect >= 7) return 2;
+    if (rate >= 0.75) return 1;
+    if (rate < 0.40) return -1;
+    return 0;
+  }
+
+  function computeEstimate() {
+    const visited = visitedBands();
+    const rates = {};
+    let imputedHarder = false;
+    for (let b = 1; b <= BANDS; b++) {
+      rates[b] = (state.bandStats[b] && state.bandStats[b].answered > 0)
+        ? state.bandStats[b].correct / state.bandStats[b].answered : null;
+    }
+    if (visited.length === 0) {
+      return { estimate: 0, rates: rates, me: TOTAL_WORDS, visited: visited, imputedHarder: false };
+    }
+
+    const lowest = visited[0];
+    const highest = visited[visited.length - 1];
+    const rHigh = rates[highest];
+
+    for (let b = 1; b < lowest; b++) rates[b] = 1.0;
+
+    for (let b = lowest; b <= highest; b++) {
+      if (rates[b] !== null) continue;
+      let left = b - 1; while (left >= 1 && rates[left] === null) left--;
+      let right = b + 1; while (right <= BANDS && rates[right] === null) right++;
+      const leftR = left >= 1 ? rates[left] : null;
+      const rightR = right <= BANDS ? rates[right] : null;
+      if (isStrongRate(leftR) && isStrongRate(rightR)) {
+        rates[b] = 1.0;
+      } else if (leftR !== null && rightR !== null) {
+        const t = (b - left) / (right - left);
+        rates[b] = leftR + t * (rightR - leftR);
+      } else if (leftR !== null) {
+        rates[b] = isStrongRate(leftR) ? 1.0 : leftR;
+      } else if (rightR !== null) {
+        rates[b] = rightR;
+      } else {
+        rates[b] = 0.5;
+      }
+    }
+
+    if (highest < BANDS) {
+      if (rHigh < 0.40) {
+        for (let b = highest + 1; b <= BANDS; b++) rates[b] = 0.0;
+      } else {
+        let r = rHigh;
+        for (let step = 1; highest + step <= BANDS; step++) {
+          r = r * DECAY_MILD;
+          rates[highest + step] = Math.max(0, Math.min(1, r));
+          imputedHarder = true;
+        }
+      }
+    }
+
+    let sum = 0;
+    for (let b = 1; b <= BANDS; b++) sum += rates[b] * BAND_SIZE;
+    const estimate = Math.max(0, Math.min(TOTAL_WORDS, Math.round(sum)));
+
+    let variance = 0;
+    visited.forEach(function (b) {
+      const st = state.bandStats[b];
+      const p = st.correct / st.answered;
+      variance += (BAND_SIZE * BAND_SIZE) * ((p * (1 - p)) / Math.max(st.answered, 1));
+    });
+    return { estimate: estimate, rates: rates, me: Math.round(Z95 * Math.sqrt(variance)), visited: visited, imputedHarder: imputedHarder };
+  }
+
+  function shouldRunFinalProbe() {
+    if (state.finalProbeDone) return false;
+    if (state.itemsAnswered + BLOCK_SIZE > MAX_ITEMS) return false;
+    if (timeRemainingMs() < 2 * 60 * 1000) return false;
+    const h = highestVisitedBand();
+    if (h === null || h >= BANDS) return false;
+    return isStrongRate(bandRate(h));
+  }
+
+  function shouldStop(forceTime) {
+    const elapsed = state.startedAt ? (Date.now() - state.startedAt) : 0;
+    if (state.itemsAnswered >= MAX_ITEMS) return { stop: true, reason: "item_cap", hard: true };
+    if (forceTime || elapsed >= MAX_MS) return { stop: true, reason: "time", hard: true };
+
+    const climbing = isStillClimbing();
+
+    if (state.itemsAnswered >= SOFT_ITEMS && !climbing) {
+      return { stop: true, reason: "soft_items", hard: false };
+    }
+    if (elapsed >= AIM_MAX_MS && !climbing) {
+      return { stop: true, reason: "soft_time", hard: false };
+    }
+    if (elapsed >= AIM_MIN_MS && !climbing && state.blockIndex >= MIN_BLOCKS_FOR_ME_STOP) {
+      if (computeEstimate().me <= ME_TARGET) return { stop: true, reason: "aim_precision", hard: false };
+    }
+    if (!climbing && state.phase !== "warmup" && state.blockIndex >= MIN_BLOCKS_FOR_ME_STOP) {
+      if (computeEstimate().me <= ME_TARGET) return { stop: true, reason: "precision", hard: false };
+    }
+    return { stop: false, reason: null, hard: false };
+  }
+
+  function formatTime(ms) {
+    const s = Math.max(0, Math.floor(ms / 1000));
+    return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+  }
+
+  function updateTimer() {
+    if (!state.startedAt) return;
+    el.statusRight.textContent = formatTime(timeRemainingMs()) + " left";
+  }
+
+
+  function updateDebugStats(lastCorrect) {
+    if (!state.debug || !el.debugPanel) return;
+    el.debugPanel.classList.add("visible");
+    const { estimate, rates, me, visited, imputedHarder } = computeEstimate();
+    const elapsed = state.startedAt ? Date.now() - state.startedAt : 0;
+    const lines = [];
+    lines.push("DEBUG MODE");
+    lines.push("phase=" + state.phase + "  band=" + state.band + "  blockIndex=" + state.blockIndex + "  lastDelta=" + state.lastDelta + "  climbing=" + isStillClimbing());
+    lines.push("itemsAnswered=" + state.itemsAnswered + "  time=" + formatTime(elapsed) + "  left=" + formatTime(timeRemainingMs()));
+    if (state.phase === "warmup") {
+      const done = state.blockPos + (typeof lastCorrect === "boolean" ? 1 : 0);
+      // after answer, blockPos may not yet advance — show blockCorrect
+      lines.push("opening blockCorrect(so far)=" + (state._blockCorrect || 0) + "/" + WARMUP_SIZE);
+    } else {
+      lines.push("current block pos=" + (state.blockPos + 1) + "/" + BLOCK_SIZE + "  blockCorrect=" + (state._blockCorrect || 0));
+    }
+    if (typeof lastCorrect === "boolean") {
+      lines.push("lastAnswer=" + (lastCorrect ? "CORRECT" : "WRONG"));
+    }
+    lines.push("runningEstimate=" + estimate + "  approxME=±" + me + "  imputedHarder=" + imputedHarder);
+    const rateParts = [];
+    for (let b = 1; b <= BANDS; b++) {
+      const st = state.bandStats[b];
+      if (st && st.answered > 0) {
+        rateParts.push("B" + b + ":" + st.correct + "/" + st.answered + "=" + (rates[b] * 100).toFixed(0) + "%");
+      } else {
+        rateParts.push("B" + b + ":" + (rates[b] == null ? "-" : (rates[b] * 100).toFixed(0) + "%*"));
+      }
+    }
+    lines.push(rateParts.join("  "));
+    lines.push("* = imputed/assumed");
+    el.debugPanel.textContent = lines.join("\n");
+  }
+
+  function updateProgress() {
+    el.statusLeft.textContent = "Question " + (state.itemsAnswered + 1);
+  }
+
+  function detectSpeech() {
+    state.speechOk = typeof window.speechSynthesis !== "undefined" &&
+      typeof window.SpeechSynthesisUtterance !== "undefined";
+    if (!state.speechOk) {
+      el.speechNote.hidden = false;
+      el.speechNote.textContent = "Hear buttons unavailable in this browser. You can still complete the test by reading.";
+      el.hearSentence.disabled = true;
+    } else {
+      el.speechNote.hidden = true;
+      el.hearSentence.disabled = false;
+    }
+  }
+
+  function speak(text) {
+    if (!state.speechOk) return;
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-GB"; u.rate = 0.95;
+      window.speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+
+  function renderItem() {
+    const item = state.currentBlock[state.blockPos];
+    state.selected = null;
+    el.btnNext.disabled = true;
+    el.sentenceText.innerHTML = sentenceToHtml(item.sentence);
+    el.optionsList.innerHTML = "";
+
+    item.options.forEach(function (opt, idx) {
+      const row = document.createElement("div");
+      row.className = "option";
+      const main = document.createElement("button");
+      main.type = "button"; main.className = "option-main";
+      main.setAttribute("role", "radio"); main.setAttribute("aria-checked", "false");
+      main.textContent = opt;
+      main.addEventListener("click", function () {
+        state.selected = idx;
+        el.optionsList.querySelectorAll(".option-main").forEach(function (b) {
+          b.classList.remove("selected"); b.setAttribute("aria-checked", "false");
+        });
+        main.classList.add("selected"); main.setAttribute("aria-checked", "true");
+        el.btnNext.disabled = false;
+      });
+      const hear = document.createElement("button");
+      hear.type = "button"; hear.className = "hear-btn";
+      hear.setAttribute("aria-label", "Hear option: " + opt);
+      hear.innerHTML = '<span class="icon" aria-hidden="true">🔊</span>';
+      if (!state.speechOk) hear.disabled = true;
+      else hear.addEventListener("click", function (e) { e.stopPropagation(); speak(opt); });
+      row.appendChild(main); row.appendChild(hear);
+      el.optionsList.appendChild(row);
+    });
+
+    el.hearSentence.onclick = function () {
+      speak(sentenceToSpeech(item.sentence));
+    };
+    updateProgress();
+    updateTimer();
+    updateDebugStats();
+  }
+
+  function startWarmup() {
+    state.phase = "warmup";
+    state.currentBlock = drawWarmup();
+    state.blockPos = 0;
+    state._blockCorrect = 0;
+    renderItem();
+  }
+
+  function finishOpeningAndStartAdaptive(blockCorrect) {
+    const from = 1;
+    const delta = bandDeltaFromBlock(blockCorrect, WARMUP_SIZE);
+    const next = clampBand(from + delta);
+    state.lastDelta = next - from;
+    state.band = next;
+    state.phase = "adaptive";
+    state.blockIndex = 1;
+    state._blockCorrect = 0;
+    state.currentBlock = drawBlock(state.band);
+    state.blockPos = 0;
+    renderItem();
+  }
+
+  function startBlock() {
+    state.currentBlock = drawBlock(state.band);
+    state.blockPos = 0;
+    renderItem();
+  }
+
+  function finishBlockAndAdapt(blockCorrect) {
+    const from = state.band;
+    const delta = bandDeltaFromBlock(blockCorrect, BLOCK_SIZE);
+    const next = clampBand(from + delta);
+    state.lastDelta = next - from;
+    state.band = next;
+    state.blockIndex += 1;
+  }
+
+  function maybeStopOrContinue(timeUp) {
+    // After a final probe block, always end
+    if (state.phase === "probe") {
+      endTest(state.pendingStopReason || "probe_done");
+      return;
+    }
+    const stop = shouldStop(timeUp);
+    if (!stop.stop) {
+      startBlock();
+      return;
+    }
+    // Before ending: one real block at next higher band if still strong at the top
+    if (!stop.hard && shouldRunFinalProbe()) {
+      state.finalProbeDone = true;
+      state.pendingStopReason = stop.reason;
+      state.phase = "probe";
+      state.lastDelta = 0;
+      const h = highestVisitedBand();
+      state.band = clampBand(h + 1);
+      startBlock();
+      return;
+    }
+    // Hard stop: try probe only if time hard but we somehow have ≥2 min? skip on hard
+    endTest(stop.reason);
+  }
+
+  function endTest(reason) {
+    if (state.timerId) { clearInterval(state.timerId); state.timerId = null; }
+    if (state.speechOk) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+    const { estimate } = computeEstimate();
+
+    const name = (state.name || "Student").trim() || "Student";
+    const now = new Date();
+    const timePart = now.toLocaleString("en-HK", {
+      hour: "2-digit", minute: "2-digit", hour12: false,
+      timeZone: "Asia/Hong_Kong",
+    });
+    const datePart = now.toLocaleString("en-GB", {
+      day: "numeric", month: "short", year: "numeric",
+      timeZone: "Asia/Hong_Kong",
+    });
+    // "D Mon YYYY" e.g. 21 Oct 2026
+    const sentence =
+      "The estimated score of " + name +
+      " at " + timePart +
+      " on " + datePart +
+      " is " + estimate + " / 3000.";
+    el.resultSummary.textContent = sentence;
+
+    if (state.debug && el.debugResults) {
+      const { estimate, rates, me, visited, imputedHarder } = computeEstimate();
+      const elapsed = state.startedAt ? Date.now() - state.startedAt : 0;
+      const lines = ["DEBUG RESULTS", "estimate=" + estimate + "  ME=±" + me + "  imputedHarder=" + imputedHarder];
+      lines.push("items=" + state.itemsAnswered + "  blocks=" + state.blockIndex + "  time=" + formatTime(elapsed) + "  stop=" + (reason || ""));
+      lines.push("finalBand=" + state.band + "  visited=[" + visited.join(",") + "]");
+      for (let b = 1; b <= BANDS; b++) {
+        const st = state.bandStats[b];
+        const r = rates[b];
+        if (st && st.answered > 0) {
+          lines.push("Band " + b + ": " + st.correct + "/" + st.answered + " (" + (r * 100).toFixed(1) + "%) → +" + Math.round(r * BAND_SIZE));
+        } else {
+          lines.push("Band " + b + ": imputed " + (r * 100).toFixed(1) + "% → +" + Math.round(r * BAND_SIZE));
+        }
+      }
+      el.debugResults.textContent = lines.join("\n");
+      el.debugResults.classList.add("visible");
+    } else if (el.debugResults) {
+      el.debugResults.classList.remove("visible");
+      el.debugResults.textContent = "";
+    }
+
+    show(el.results);
+  }
+
+  function onNext() {
+    if (state.selected === null) return;
+    const item = state.currentBlock[state.blockPos];
+    const correct = state.selected === item.correctIdx;
+    ensureBandStats(item.band);
+    state.bandStats[item.band].answered += 1;
+    if (correct) state.bandStats[item.band].correct += 1;
+    state.itemsAnswered += 1;
+    if (state.phase === "warmup" && correct) state.warmupCorrect += 1;
+    if (!state._blockCorrect) state._blockCorrect = 0;
+    if (correct) state._blockCorrect += 1;
+
+    const timeUp = state.startedAt && (Date.now() - state.startedAt >= MAX_MS);
+
+    if (state.phase === "warmup") {
+      if (state.itemsAnswered >= MAX_ITEMS || timeUp) {
+        endTest(timeUp ? "time" : "item_cap");
+        return;
+      }
+      if (state.blockPos < WARMUP_SIZE - 1) {
+        state.blockPos += 1;
+        renderItem();
+        return;
+      }
+      finishOpeningAndStartAdaptive(state._blockCorrect || 0);
+      state._blockCorrect = 0;
+      return;
+    }
+
+    if (state.blockPos < BLOCK_SIZE - 1) {
+      if (state.itemsAnswered >= MAX_ITEMS) { state.blockIndex += 1; endTest("item_cap"); return; }
+      if (timeUp) { state.blockIndex += 1; endTest("time"); return; }
+      state.blockPos += 1;
+      renderItem();
+      return;
+    }
+
+    finishBlockAndAdapt(state._blockCorrect || 0);
+    state._blockCorrect = 0;
+    maybeStopOrContinue(timeUp);
+  }
+
+  function startTest() {
+    state.name = (el.name.value || "").trim();
+    state.debug = state.name.toLowerCase() === "debug";
+    if (el.debugPanel) {
+      el.debugPanel.classList.toggle("visible", state.debug);
+      el.debugPanel.textContent = "";
+    }
+    if (el.debugResults) {
+      el.debugResults.classList.remove("visible");
+      el.debugResults.textContent = "";
+    }
+    // Keep typed name for results sentence; debug uses "debug" as name unless we prefer Student
+    state.phase = "warmup";
+    state.band = START_BAND_DEFAULT;
+    state.blockIndex = 0;
+    state.itemsAnswered = 0;
+    state.warmupCorrect = 0;
+    state.bandStats = {};
+    state.usedIds = new Set();
+    state.selected = null;
+    state._blockCorrect = 0;
+    state.lastDelta = 0;
+    state.finalProbeDone = false;
+    state.pendingStopReason = null;
+    state.startedAt = Date.now();
+    detectSpeech();
+    if (state.timerId) clearInterval(state.timerId);
+    state.timerId = setInterval(updateTimer, 1000);
+    updateTimer();
+    show(el.test);
+    startWarmup();
+  }
+
+  el.btnStart.addEventListener("click", startTest);
+  el.btnAboutStart.addEventListener("click", function () { show(el.about); });
+  el.btnAboutBack.addEventListener("click", function () { show(el.start); });
+  el.btnNext.addEventListener("click", onNext);
+  el.btnRestart.addEventListener("click", function () { show(el.start); });
+  document.addEventListener("click", function warm() {
+    if (typeof window.speechSynthesis !== "undefined") {
+      try { window.speechSynthesis.getVoices(); } catch (e) {}
+    }
+  }, { once: true });
+})();
+
+</script>
+</body>
+</html>
