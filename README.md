@@ -1,22 +1,23 @@
-# Basic Vocab Test (Parts A & B)
+# Basic Vocab Test (Closest & Opposite Meaning)
 
-Self-contained, offline HTML tools for HK high-school ESL students. Each part estimates mastery of high-frequency English (**Oxford 3000–style bands**) as **one number from 0 to 3000**.
+Self-contained, offline HTML tools for HK high-school ESL students. Each test estimates mastery of high-frequency English (**Oxford 3000–style bands**) as **one number from 0 to 3000**.
 
 | File | Task |
 |------|------|
-| `basic-vocab-test-part-a.html` | **Part A** — choose the **closest meaning** of the underlined word (canonical) |
-| `basic-vocab-test-part-b.html` | **Part B** — choose the **opposite meaning** of the underlined word |
+| `closest-meaning-test.html` | **Closest Meaning Test** — choose the **closest meaning** of the underlined word (canonical) |
+| `opposite-meaning-test.html` | **Opposite Meaning Test** — choose the **opposite meaning** of the underlined word |
+| `index.html` | Home page linking to both tests |
 | `README.md` | This guide |
 
-The old `oxford3000-vocab-estimate.html` name is retired; **Part A is the canonical closest-meaning test**.
+Older filenames (`basic-vocab-test-part-a.html` / `basic-vocab-test-part-b.html`) and “Part A / Part B” labels are retired; **Closest Meaning Test** is the canonical closest-meaning test.
 
-No CDN, no server, no install. System fonts only. Parts share the same adaptive engine, UI rules, debug mode, and results sentence; only the item task and item banks differ.
+No CDN, no server, no install. System fonts only. Both tests share the same adaptive engine, UI rules, debug mode, and results sentence; only the item task and item banks differ.
 
 ## How to open (phone / laptop)
 
 ### Phone (recommended for class)
 
-1. Copy the HTML file you need (`basic-vocab-test-part-a.html` and/or `basic-vocab-test-part-b.html`) to the phone (AirDrop, Drive, WhatsApp file, USB, LMS, etc.).
+1. Copy the HTML file you need (`closest-meaning-test.html` and/or `opposite-meaning-test.html`) to the phone (AirDrop, Drive, WhatsApp file, USB, LMS, etc.).
 2. Open in a mobile browser (iPhone: Files → Safari; Android: Downloads → Chrome).
 3. Stay on the page until the result screen. Nothing is uploaded.
 
@@ -24,13 +25,13 @@ Works **offline** after the file is on the device. “Hear” buttons need Web S
 
 ### Computer
 
-Double-click the HTML file, or drag it into Chrome / Edge / Safari / Firefox.
+Double-click the HTML file, or drag it into Chrome / Edge / Safari / Firefox. Or open the live GitHub Pages site.
 
 ## How students use it
 
 1. Optional: enter **Name / ID**.
 2. Tap **Start test**.
-3. Answer questions (opening block of 8, then adaptive). Each item: underlined word → **closest** (Part A) or **opposite** (Part B) meaning; optional Hear buttons.
+3. Answer questions (opening block of 8, then adaptive). Each item: underlined word → **closest** (Closest Meaning Test) or **opposite** (Opposite Meaning Test) meaning; optional Hear buttons.
 4. During the test: **Question N** + **time remaining** only.
 5. **Results:** one sentence only — `The estimated score of {Name} at {HH:MM} on {D Mon YYYY} is {N} / 3000.` (Asia/Hong_Kong; Name defaults to “Student” if blank) — plus **New sitting**.
 
@@ -41,11 +42,11 @@ Teacher notes are behind a collapsed control on the start screen. Typical sittin
 ### Item format
 
 - Situational sentence with **one underlined target word**.
-- Part A prompt: **closest meaning**; Part B prompt: **opposite meaning**.
+- Closest Meaning Test prompt: **closest meaning**; Opposite Meaning Test prompt: **opposite meaning**.
 - Exactly **4** options, structure-matched (same word count). Prefer the clearest correct choice; distractors are parallel in form.
 - **Hear sentence** + **Hear** per option when speech is available.
 
-### Part A example (closest)
+### Closest Meaning Test example
 
 > After she opened her birthday present, she looked very <u>happy</u>.
 >
@@ -53,7 +54,7 @@ Teacher notes are behind a collapsed control on the start screen. Typical sittin
 >
 > A. glad &nbsp; B. heavy &nbsp; C. hungry &nbsp; D. angry
 
-### Part B example (opposite)
+### Opposite Meaning Test example
 
 > The soup is too <u>hot</u> to eat right now.
 >
@@ -92,10 +93,10 @@ Teacher notes are behind a collapsed control on the start screen. Typical sittin
 
 ### Item banks
 
-| Part | Task | Main pool | Opening pool |
+| Test | Task | Main pool | Opening pool |
 |------|------|-----------|--------------|
-| A | Closest meaning | ≥50 items × 6 bands (300) | 24 Band-1 |
-| B | Opposite meaning | ≥50 items × 6 bands (307) | 24 Band-1 |
+| Closest Meaning | Closest meaning | ≥50 items × 6 bands (300) | 24 Band-1 |
+| Opposite Meaning | Opposite meaning | ≥50 items × 6 bands (307) | 24 Band-1 |
 
 ### Hidden debug mode
 
@@ -103,6 +104,6 @@ If **Name / ID** is exactly `debug` (case-insensitive), a live stats panel appea
 
 ## Classroom notes
 
-- Part A and Part B can be used on different days or as a pair; scores are comparable in scale but are **not** the same items.
+- Closest Meaning and Opposite Meaning can be used on different days or as a pair; scores are comparable in scale but are **not** the same items.
 - Students should not see band labels or teacher notes during a sitting.
 - Offline files travel easily; no accounts or uploads.
