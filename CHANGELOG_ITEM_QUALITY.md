@@ -39,3 +39,6 @@ Replaced all 24 with ultra-easy lemmas absent from the scored pool (tall/rich/da
 - `opposite-meaning-test.html`
 - `closest-meaning-test.html`
 - `ITEM_QUALITY_REVIEW.md` (review source; untracked→tracked if committed)
+
+## Testing mode (secret, 23 Oct 2026)
+- Enter name `testing` (case-insensitive) on either HTML test to show per-item `id`, `band`, and the post-shuffle correct option (badge + panel). Separate from `debug` stats mode. Not advertised on the start screen.

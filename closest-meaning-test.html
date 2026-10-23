@@ -104,6 +104,38 @@
     word-break: break-word;
   }
   .debug-panel.visible { display: block; }
+  /* Secret testing mode (name === "testing"): item id + correct key; not advertised on start screen */
+  .testing-panel {
+    display: none;
+    margin: 8px 0 12px;
+    padding: 10px 12px;
+    background: #1b5e20;
+    color: #e8f5e9;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .testing-panel.visible { display: block; }
+  .option-main.testing-correct {
+    border-color: #2e7d32;
+    background: #e8f5e9;
+    box-shadow: inset 0 0 0 1px #2e7d32;
+  }
+  .testing-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: #2e7d32;
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    vertical-align: middle;
+  }
   .debug-results {
     display: none;
     margin-top: 14px;
@@ -177,6 +209,7 @@
       <span id="statusRight">20:00 left</span>
     </div>
     <pre class="debug-panel" id="debugPanel" aria-live="polite"></pre>
+    <pre class="testing-panel" id="testingPanel" aria-live="polite"></pre>
     <div class="card">
       <div id="speechNote" class="speech-note" hidden></div>
       <p class="prompt" id="itemPrompt">Choose the closest meaning of the <u>underlined</u> word.</p>
@@ -4468,7 +4501,7 @@ const WARMUP_BANK = [
     itemsAnswered: 0, warmupCorrect: 0, startedAt: null, timerId: null,
     currentBlock: [], blockPos: 0, selected: null, bandStats: {},
     usedIds: new Set(), speechOk: false, _blockCorrect: 0,
-    lastDelta: 0, finalProbeDone: false, pendingStopReason: null, debug: false,
+    lastDelta: 0, finalProbeDone: false, pendingStopReason: null, debug: false, testing: false,
   };
 
   const el = {
@@ -4489,6 +4522,7 @@ const WARMUP_BANK = [
     btnNext: document.getElementById("btnNext"),
     resultSummary: document.getElementById("resultSummary"),
     debugPanel: document.getElementById("debugPanel"),
+    testingPanel: document.getElementById("testingPanel"),
     debugResults: document.getElementById("debugResults"),
     btnRestart: document.getElementById("btnRestart"),
   };
@@ -4789,6 +4823,13 @@ const WARMUP_BANK = [
       main.type = "button"; main.className = "option-main";
       main.setAttribute("role", "radio"); main.setAttribute("aria-checked", "false");
       main.textContent = opt;
+      if (state.testing && idx === item.correctIdx) {
+        main.classList.add("testing-correct");
+        const badge = document.createElement("span");
+        badge.className = "testing-badge";
+        badge.textContent = "CORRECT";
+        main.appendChild(badge);
+      }
       main.addEventListener("click", function () {
         state.selected = idx;
         el.optionsList.querySelectorAll(".option-main").forEach(function (b) {
@@ -4810,6 +4851,21 @@ const WARMUP_BANK = [
     el.hearSentence.onclick = function () {
       speak(sentenceToSpeech(item.sentence));
     };
+
+    if (el.testingPanel) {
+      if (state.testing) {
+        el.testingPanel.classList.add("visible");
+        const correctText = item.options[item.correctIdx];
+        el.testingPanel.textContent =
+          "TESTING MODE\n" +
+          "id=" + item.id + " · band=" + item.band + "\n" +
+          "Correct: " + correctText;
+      } else {
+        el.testingPanel.classList.remove("visible");
+        el.testingPanel.textContent = "";
+      }
+    }
+
     updateProgress();
     updateTimer();
     updateDebugStats();
@@ -4970,16 +5026,22 @@ const WARMUP_BANK = [
 
   function startTest() {
     state.name = (el.name.value || "").trim();
+    // Secret modes (case-insensitive): "debug" = stats panel; "testing" = item id + correct key overlays. Mutually exclusive by name.
     state.debug = state.name.toLowerCase() === "debug";
+    state.testing = state.name.toLowerCase() === "testing";
     if (el.debugPanel) {
       el.debugPanel.classList.toggle("visible", state.debug);
       el.debugPanel.textContent = "";
+    }
+    if (el.testingPanel) {
+      el.testingPanel.classList.toggle("visible", state.testing);
+      el.testingPanel.textContent = "";
     }
     if (el.debugResults) {
       el.debugResults.classList.remove("visible");
       el.debugResults.textContent = "";
     }
-    // Keep typed name for results sentence; debug uses "debug" as name unless we prefer Student
+    // Keep typed name for results sentence; debug/testing keep the typed name as-is
     state.phase = "warmup";
     state.band = START_BAND_DEFAULT;
     state.blockIndex = 0;
