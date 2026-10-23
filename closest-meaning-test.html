@@ -4480,6 +4480,9 @@ const WARMUP_BANK = [
 (function () {
   "use strict";
 
+  // Flip to true to re-enable secret name modes ("debug" / "testing").
+  const SECRET_MODES_ENABLED = false;
+
   const BANDS = 6;
   const BAND_SIZE = 500;
   const TOTAL_WORDS = 3000;
@@ -5027,8 +5030,9 @@ const WARMUP_BANK = [
   function startTest() {
     state.name = (el.name.value || "").trim();
     // Secret modes (case-insensitive): "debug" = stats panel; "testing" = item id + correct key overlays. Mutually exclusive by name.
-    state.debug = state.name.toLowerCase() === "debug";
-    state.testing = state.name.toLowerCase() === "testing";
+    // Gated by SECRET_MODES_ENABLED so typing those names behaves like a normal student name when disabled.
+    state.debug = SECRET_MODES_ENABLED && state.name.toLowerCase() === "debug";
+    state.testing = SECRET_MODES_ENABLED && state.name.toLowerCase() === "testing";
     if (el.debugPanel) {
       el.debugPanel.classList.toggle("visible", state.debug);
       el.debugPanel.textContent = "";
